@@ -20,9 +20,21 @@ const main = async () => {
 
   const parsedData = schmea.parse(data);
 
-  await dbClient.insert(dbSchema.data).values({
-    data: parsedData,
-  });
+  const insert = await dbClient
+    .insert(dbSchema.data)
+    .values(
+      parsedData.map((d) => {
+        return { id: d.id.toString(), data: d };
+      }),
+    )
+    .onConflictDoNothing()
+    .returning();
 
-  logger.info("Inserted data");
+  logger.info(`Inserted ${insert.length} rows`);
+
+  const result = await dbClient.select().from(dbSchema.data).limit(3);
+
+  console.log(result);
 };
+
+main();
