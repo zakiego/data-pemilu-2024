@@ -1,5 +1,7 @@
 # Scraper Starter
 
+This project was created using [Bun](https://bun.sh), fast all-in-one JavaScript runtime.
+
 ## Getting Started
 
 Install dependencies:
