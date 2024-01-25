@@ -9,6 +9,7 @@ Build with:
 - Runtime: [Bun](https://bun.sh)
 - ORM Database: [Drizzle](https://orm.drizzle.team/)
 - Schema Validation: [Zod](https://zod.dev/)
+- Logging: [Pino](https://getpino.io/)
 
 ## Getting Started
 
