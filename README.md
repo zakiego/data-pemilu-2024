@@ -6,6 +6,12 @@ This project was created using [Bun](https://bun.sh), fast all-in-one JavaScript
 
 ## Getting Started
 
+Clone the repository:
+
+```bash
+git clone https://github.com/zakiego/scraper-starter.git
+```
+
 Install dependencies:
 
 ```bash
