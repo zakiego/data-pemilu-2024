@@ -4,6 +4,12 @@ Dead simple scraper starter project.
 
 This project was created using [Bun](https://bun.sh), fast all-in-one JavaScript runtime.
 
+Build with:
+
+- Runtime: [Bun](https://bun.sh)
+- ORM Database: [Drizzle](https://orm.drizzle.team/)
+- Schema Validation: [Zod](https://zod.dev/)
+
 ## Getting Started
 
 Clone the repository:
