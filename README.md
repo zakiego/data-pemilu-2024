@@ -19,3 +19,9 @@ Run the script:
 ```bash
 bun start
 ```
+
+Open database studio:
+
+```bash
+bun db:studio
+```
