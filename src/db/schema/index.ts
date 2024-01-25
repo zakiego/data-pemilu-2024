@@ -7,5 +7,5 @@ export const data = sqliteTable("data", {
   data: text("data", {
     mode: "json",
   }).$type<any>(),
-  updatedAt: text("updated_at").default(sql`(CURRENT_TIMESTAMP)`),
+  createdAt: text("created_at").default(sql`(CURRENT_TIMESTAMP)`),
 });
