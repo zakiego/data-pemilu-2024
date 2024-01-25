@@ -1,9 +1,8 @@
 import { sql } from "drizzle-orm";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { ulid } from "ulidx";
 
 export const data = sqliteTable("data", {
-  id: text("id").primaryKey().$defaultFn(ulid),
+  id: text("id").primaryKey(),
   data: text("data", {
     mode: "json",
   }).$type<any>(),
