@@ -5,9 +5,9 @@ import { dprdProvinsi } from "@/endpoint/dprd-provinsi";
 import { pilpres } from "@/endpoint/pilpres";
 
 export const ENDPOINT_FUNCTION = {
-	pilpres,
-	dpr,
-	dprdProvinsi,
-	dprdKabupatenKota,
-	dpd,
+  pilpres,
+  dpr,
+  dprdProvinsi,
+  dprdKabupatenKota,
+  dpd,
 };
