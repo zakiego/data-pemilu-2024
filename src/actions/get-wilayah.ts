@@ -215,7 +215,7 @@ const getTPS = async () => {
   );
 
   const concurrent = new ConcurrentManager({
-    concurrent: 25,
+    concurrent: 500,
   });
 
   for (let i = 0; i < listKelurahan.length; i++) {
