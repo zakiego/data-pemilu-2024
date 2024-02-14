@@ -1,14 +1,14 @@
-import { migrate } from "drizzle-orm/bun-sqlite/migrator";
-import { dbClient } from "./index";
-import { logger } from "~/utils/log";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { migrationClient } from "./index";
 
-// https://orm.drizzle.team/docs/migrations
+const main = async () => {
+	try {
+		await migrate(migrationClient, { migrationsFolder: "./src/db/migrations" });
 
-try {
-  // This will run migrations on the database, skipping the ones already applied
-  await migrate(dbClient, { migrationsFolder: "./src/db/migrations" });
+		console.log("Migration success");
+	} catch (error) {
+		console.error(`Migration error: ${error}`);
+	}
+};
 
-  logger.info("Migration success");
-} catch (error) {
-  logger.error(`Migration error: ${error}`);
-}
+main().then(() => process.exit(0));

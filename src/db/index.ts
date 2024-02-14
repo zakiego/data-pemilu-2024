@@ -1,15 +1,15 @@
-import { drizzle } from "drizzle-orm/bun-sqlite";
-import { Database } from "bun:sqlite";
-import { data } from "./schema";
+import { wilayah } from "@/db/schema";
+import { env } from "@/utils/env";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
-export const dbConnection = new Database("sqlite.db");
-
-const dbSchema = {
-  data,
+export const dbSchema = {
+	wilayah,
 };
 
-const dbClient = drizzle(dbConnection, {
-  schema: dbSchema,
-});
+export const migrationClient = drizzle(postgres(env.DATABASE_URL, { max: 1 }));
 
-export { dbSchema, dbClient };
+const queryClient = postgres(env.DATABASE_URL, { max: 3 });
+export const dbClient = drizzle(queryClient, {
+	schema: dbSchema,
+});

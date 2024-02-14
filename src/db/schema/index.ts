@@ -1,10 +1,8 @@
-import { sql } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, pgTable, text } from "drizzle-orm/pg-core";
 
-export const data = sqliteTable("data", {
-  id: text("id").primaryKey(),
-  data: text("data", {
-    mode: "json",
-  }).$type<any>(),
-  createdAt: text("created_at").default(sql`(CURRENT_TIMESTAMP)`),
+export const wilayah = pgTable("wilayah", {
+	id: integer("id").primaryKey(),
+	kode: text("kode").notNull(),
+	nama: text("nama").notNull(),
+	tingkat: integer("tingkat").notNull(),
 });
