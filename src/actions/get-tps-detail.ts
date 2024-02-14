@@ -9,14 +9,14 @@ export const getTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
       and(eq(table.tingkat, 5), eq(table.is_fetched, false)),
-    limit: 1000,
+    // limit: 1000,
   });
   const count = listTps.length;
 
   logger.info(`Successfully queried data for TPS: ${listTps.length} rows`);
 
   const concurrent = new ConcurrentManager({
-    concurrent: 30,
+    concurrent: 500,
   });
 
   for (let i = 0; i < listTps.length; i++) {
