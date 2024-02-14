@@ -8,6 +8,13 @@
       "when": 1707879200273,
       "tag": "0000_bent_medusa",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1707884490439,
+      "tag": "0001_stiff_alice",
+      "breakpoints": true
     }
   ]
 }

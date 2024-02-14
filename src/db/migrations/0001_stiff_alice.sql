@@ -1,0 +1,1 @@
+ALTER TABLE "wilayah" ADD COLUMN "is_fetched" boolean DEFAULT false;
