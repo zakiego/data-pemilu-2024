@@ -1,4 +1,10 @@
-import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	integer,
+	pgTable,
+	text,
+	timestamp,
+} from "drizzle-orm/pg-core";
 
 export const wilayah = pgTable("wilayah", {
 	id: integer("id").primaryKey(),
@@ -6,4 +12,6 @@ export const wilayah = pgTable("wilayah", {
 	nama: text("nama").notNull(),
 	tingkat: integer("tingkat").notNull(),
 	is_fecthed: boolean("is_fetched").default(false),
+	updated_at: timestamp("updated_at").defaultNow(),
+	created_at: timestamp("created_at").defaultNow(),
 });

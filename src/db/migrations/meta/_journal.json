@@ -15,6 +15,13 @@
       "when": 1707884490439,
       "tag": "0001_stiff_alice",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707884637550,
+      "tag": "0002_absent_terror",
+      "breakpoints": true
     }
   ]
 }
