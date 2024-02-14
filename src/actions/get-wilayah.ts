@@ -1,8 +1,9 @@
 import ConcurrentManager from "concurrent-manager";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import z from "zod";
 import { dbClient, dbSchema } from "@/db";
 import { logger } from "@/utils/log";
+import { ENDPOINT_FUNCTION } from "@/endpoint";
 
 const wilayahFetcher = async (endpoint: string) => {
 	const response = await fetch(endpoint).then((res) => res.json());
@@ -42,11 +43,12 @@ const getProvinsi = async () => {
 
 const getKabupatenKota = async () => {
 	const listProvinsi = await dbClient.query.wilayah.findMany({
-		where: (table, { eq }) => eq(table.tingkat, 1),
+		where: (table, { eq, and }) =>
+			and(eq(table.tingkat, 1), eq(table.is_fetched, false)),
 	});
-	logger.info(
-		`Successfully queried data for kabupaten: ${listProvinsi.length} rows`,
-	);
+	const count = listProvinsi.length;
+
+	logger.info(`Successfully queried data for kabupaten: ${count} rows`);
 
 	for (let i = 0; i < listProvinsi.length; i++) {
 		const provinsi = listProvinsi[i];
@@ -55,21 +57,34 @@ const getKabupatenKota = async () => {
 
 		const response = await wilayahFetcher(endpoint);
 		logger.info(
-			`${i + 1}/${
-				listProvinsi.length
-			} - Successfully fetched data for kabupaten of provinsi: ${
-				provinsi.nama
-			} - ${response.length} rows`,
+			`${i + 1}/${count} - Successfully fetched data for kabupaten: ${
+				response.length
+			} rows`,
 		);
 
-		const insert = await dbClient
-			.insert(dbSchema.wilayah)
-			.values(response)
-			.onConflictDoNothing()
-			.returning();
+		const insert_and_update_is_fetched = await dbClient.transaction(
+			async (trx) => {
+				const insert = await trx
+					.insert(dbSchema.wilayah)
+					.values(response)
+					.onConflictDoNothing()
+					.returning();
+
+				const update_is_fetched = await trx
+					.update(dbSchema.wilayah)
+					.set({
+						is_fetched: true,
+						updated_at: new Date(),
+					})
+					.where(eq(dbSchema.wilayah.kode, provinsi.kode));
+
+				return insert;
+			},
+		);
+
 		logger.info(
-			`${i + 1}/${listProvinsi.length} - Inserting data for kabupaten: ${
-				insert.length
+			`${i + 1}/${count} - Inserting data for kabupaten: ${
+				insert_and_update_is_fetched.length
 			} rows`,
 		);
 	}
@@ -77,50 +92,70 @@ const getKabupatenKota = async () => {
 
 const getKecamatan = async () => {
 	const listKabupatenKota = await dbClient.query.wilayah.findMany({
-		where: (table, { eq }) => eq(table.tingkat, 2),
+		where: (table, { eq, and }) =>
+			and(eq(table.tingkat, 2), eq(table.is_fetched, false)),
 	});
-	logger.info(
-		`Successfully queried data for kecamatan: ${listKabupatenKota.length} rows`,
-	);
+	const count = listKabupatenKota.length;
+	logger.info(`Successfully queried data for kecamatan: ${count} rows`);
+
+	const concurrent = new ConcurrentManager({
+		concurrent: 300,
+	});
 
 	for (let i = 0; i < listKabupatenKota.length; i++) {
-		const kabupatenKota = listKabupatenKota[i];
+		concurrent.queue(async () => {
+			const kabupatenKota = listKabupatenKota[i];
 
-		const provinsiId = kabupatenKota.kode.substring(0, 2);
-		const endpoint = `https://sirekap-obj-data.kpu.go.id/wilayah/pemilu/ppwp/${provinsiId}/${kabupatenKota.kode}.json`;
+			const provinsiId = kabupatenKota.kode.substring(0, 2);
+			const endpoint = `https://sirekap-obj-data.kpu.go.id/wilayah/pemilu/ppwp/${provinsiId}/${kabupatenKota.kode}.json`;
 
-		const response = await wilayahFetcher(endpoint);
-		logger.info(
-			`${i + 1}/${
-				listKabupatenKota.length
-			} - Successfully fetched data for kecamatan of kabupaten: ${
-				kabupatenKota.nama
-			} - ${response.length} rows`,
-		);
+			const response = await wilayahFetcher(endpoint);
+			logger.info(
+				`${i + 1}/${count} - Successfully fetched data for kecamatan: ${
+					response.length
+				} rows`,
+			);
 
-		const insert = await dbClient
-			.insert(dbSchema.wilayah)
-			.values(response)
-			.onConflictDoNothing()
-			.returning();
-		logger.info(
-			`${i + 1}/${listKabupatenKota.length} - Inserting data for kecamatan: ${
-				insert.length
-			} rows`,
-		);
+			const insert_and_update_is_fetched = await dbClient.transaction(
+				async (trx) => {
+					const insert = await trx
+						.insert(dbSchema.wilayah)
+						.values(response)
+						.onConflictDoNothing()
+						.returning();
+
+					const update_is_fetched = await trx
+						.update(dbSchema.wilayah)
+						.set({
+							is_fetched: true,
+							updated_at: new Date(),
+						})
+						.where(eq(dbSchema.wilayah.kode, kabupatenKota.kode));
+
+					return insert;
+				},
+			);
+
+			logger.info(
+				`${i + 1}/${count} - Inserting data for kecamatan: ${
+					insert_and_update_is_fetched.length
+				} rows`,
+			);
+		});
 	}
+
+	await concurrent.run();
 };
 
 const getKelurahan = async () => {
 	const listKecamatan = await dbClient.query.wilayah.findMany({
-		where: (table, { eq }) => eq(table.tingkat, 3),
+		where: (table, { eq, and }) =>
+			and(eq(table.tingkat, 3), eq(table.is_fetched, false)),
 	});
-	logger.info(
-		`Successfully queried data for kelurahan: ${listKecamatan.length} rows`,
-	);
+	const count = listKecamatan.length;
 
 	const concurrent = new ConcurrentManager({
-		concurrent: 100,
+		concurrent: 500,
 	});
 
 	for (let i = 0; i < listKecamatan.length; i++) {
@@ -134,19 +169,32 @@ const getKelurahan = async () => {
 			logger.info(
 				`${i + 1}/${
 					listKecamatan.length
-				} - Successfully fetched data for kelurahan of kecamatan: ${
-					kecamatan.nama
-				} - ${response.length} rows`,
+				} - Successfully fetched data for kelurahan: ${response.length} rows`,
 			);
 
-			const insert = await dbClient
-				.insert(dbSchema.wilayah)
-				.values(response)
-				.onConflictDoNothing()
-				.returning();
+			const insert_and_update_is_fetched = await dbClient.transaction(
+				async (trx) => {
+					const insert = await trx
+						.insert(dbSchema.wilayah)
+						.values(response)
+						.onConflictDoNothing()
+						.returning();
+
+					const update_is_fetched = await trx
+						.update(dbSchema.wilayah)
+						.set({
+							is_fetched: true,
+							updated_at: new Date(),
+						})
+						.where(eq(dbSchema.wilayah.kode, kecamatan.kode));
+
+					return insert;
+				},
+			);
+
 			logger.info(
-				`${i + 1}/${listKecamatan.length} - Inserting data for kelurahan: ${
-					insert.length
+				`${i + 1}/${count} - Inserting data for kelurahan: ${
+					insert_and_update_is_fetched.length
 				} rows`,
 			);
 		});
@@ -157,42 +205,56 @@ const getKelurahan = async () => {
 
 const getTPS = async () => {
 	const listKelurahan = await dbClient.query.wilayah.findMany({
-		where: (table, { eq }) => eq(table.tingkat, 4),
+		where: (table, { eq, and }) =>
+			and(eq(table.tingkat, 4), eq(table.is_fetched, false)),
 	});
+	const count = listKelurahan.length;
 
 	logger.info(
 		`Successfully queried data for TPS: ${listKelurahan.length} rows`,
 	);
 
 	const concurrent = new ConcurrentManager({
-		concurrent: 1000,
+		concurrent: 25,
 	});
 
 	for (let i = 0; i < listKelurahan.length; i++) {
 		concurrent.queue(async () => {
 			const kelurahan = listKelurahan[i];
 
-			const provinsiId = kelurahan.kode.substring(0, 2);
-			const kabupatenKotaId = kelurahan.kode.substring(0, 4);
-			const kecamatanId = kelurahan.kode.substring(0, 7);
-			const endpoint = `https://sirekap-obj-data.kpu.go.id/wilayah/pemilu/ppwp/${provinsiId}/${kabupatenKotaId}/${kecamatanId}/${kelurahan.kode}.json`;
-			const response = await wilayahFetcher(endpoint);
-			logger.info(
-				`${i + 1}/${
-					listKelurahan.length
-				} - Successfully fetched data for TPS of kelurahan: ${
-					kelurahan.nama
-				} - ${response.length} rows`,
+			const response = await ENDPOINT_FUNCTION.pilpres.wilayah.get_list_tps(
+				kelurahan.kode,
 			);
 
-			const insert = await dbClient
-				.insert(dbSchema.wilayah)
-				.values(response)
-				.onConflictDoNothing()
-				.returning();
 			logger.info(
-				`${i + 1}/${listKelurahan.length} - Inserting data for TPS: ${
-					insert.length
+				`${i + 1}/${count} - Successfully fetched data for TPS: ${
+					response.length
+				} rows`,
+			);
+
+			const insert_and_update_is_fetched = await dbClient.transaction(
+				async (trx) => {
+					const insert = await trx
+						.insert(dbSchema.wilayah)
+						.values(response)
+						.onConflictDoNothing()
+						.returning();
+
+					const update_is_fetched = await trx
+						.update(dbSchema.wilayah)
+						.set({
+							is_fetched: true,
+							updated_at: new Date(),
+						})
+						.where(eq(dbSchema.wilayah.kode, kelurahan.kode));
+
+					return insert;
+				},
+			);
+
+			logger.info(
+				`${i + 1}/${count} - Inserting data for TPS: ${
+					insert_and_update_is_fetched.length
 				} rows`,
 			);
 		});
@@ -207,4 +269,6 @@ export const getWilayah = async () => {
 	await getKecamatan();
 	await getKelurahan();
 	await getTPS();
+
+	process.exit(0);
 };

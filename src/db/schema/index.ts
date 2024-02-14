@@ -11,7 +11,7 @@ export const wilayah = pgTable("wilayah", {
 	kode: text("kode").notNull(),
 	nama: text("nama").notNull(),
 	tingkat: integer("tingkat").notNull(),
-	is_fecthed: boolean("is_fetched").default(false),
+	is_fetched: boolean("is_fetched").default(false),
 	updated_at: timestamp("updated_at").defaultNow(),
 	created_at: timestamp("created_at").defaultNow(),
 });
