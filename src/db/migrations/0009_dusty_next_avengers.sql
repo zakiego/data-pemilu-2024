@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_tps" RENAME COLUMN "url" TO "url_page";

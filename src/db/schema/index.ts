@@ -55,7 +55,8 @@ export const ppwpTps = pgTable("ppwp_tps", {
   ts: text("ts"),
   status_suara: boolean("status_suara"),
   status_adm: boolean("status_adm"),
-  url: text("url"),
+  url_page: text("url_page"),
+  url_api: text("url_api"),
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
 });
