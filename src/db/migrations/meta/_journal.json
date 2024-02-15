@@ -36,6 +36,13 @@
       "when": 1707930038220,
       "tag": "0004_marvelous_mathemanic",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1707961245496,
+      "tag": "0005_nifty_russian",
+      "breakpoints": true
     }
   ]
 }

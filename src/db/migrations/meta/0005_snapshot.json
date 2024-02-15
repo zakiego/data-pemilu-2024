@@ -1,0 +1,298 @@
+{
+  "id": "89e54de8-93f1-4421-ab03-922c21596a03",
+  "prevId": "4dcc34bd-5e70-4bbb-beb1-fbad9c696c4b",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "ppwp_tps": {
+      "name": "ppwp_tps",
+      "schema": "",
+      "columns": {
+        "kode": {
+          "name": "kode",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "provinsi": {
+          "name": "provinsi",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kabupaten_kota": {
+          "name": "kabupaten_kota",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kecamatan": {
+          "name": "kecamatan",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kelurahan_desa": {
+          "name": "kelurahan_desa",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tps": {
+          "name": "tps",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "suara_paslon_1": {
+          "name": "suara_paslon_1",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "suara_paslon_2": {
+          "name": "suara_paslon_2",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "suara_paslon_3": {
+          "name": "suara_paslon_3",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chasil_hal_1": {
+          "name": "chasil_hal_1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chasil_hal_2": {
+          "name": "chasil_hal_2",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chasil_hal_3": {
+          "name": "chasil_hal_3",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "suara_sah": {
+          "name": "suara_sah",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "suara_total": {
+          "name": "suara_total",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pemilih_dpt_j": {
+          "name": "pemilih_dpt_j",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pemilih_dpt_l": {
+          "name": "pemilih_dpt_l",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pemilih_dpt_p": {
+          "name": "pemilih_dpt_p",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_dpt_j": {
+          "name": "pengguna_dpt_j",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_dpt_l": {
+          "name": "pengguna_dpt_l",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_dpt_p": {
+          "name": "pengguna_dpt_p",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_dptb_j": {
+          "name": "pengguna_dptb_j",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_dptb_l": {
+          "name": "pengguna_dptb_l",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_dptb_p": {
+          "name": "pengguna_dptb_p",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "suara_tidak_sah": {
+          "name": "suara_tidak_sah",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_total_j": {
+          "name": "pengguna_total_j",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_total_l": {
+          "name": "pengguna_total_l",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_total_p": {
+          "name": "pengguna_total_p",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_non_dpt_j": {
+          "name": "pengguna_non_dpt_j",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_non_dpt_l": {
+          "name": "pengguna_non_dpt_l",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pengguna_non_dpt_p": {
+          "name": "pengguna_non_dpt_p",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "psu": {
+          "name": "psu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ts": {
+          "name": "ts",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status_suara": {
+          "name": "status_suara",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status_adm": {
+          "name": "status_adm",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "wilayah": {
+      "name": "wilayah",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "kode": {
+          "name": "kode",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nama": {
+          "name": "nama",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tingkat": {
+          "name": "tingkat",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_fetched": {
+          "name": "is_fetched",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
