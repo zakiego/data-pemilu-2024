@@ -50,6 +50,20 @@
       "when": 1707961919870,
       "tag": "0006_cooing_lethal_legion",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1707962339470,
+      "tag": "0007_chief_patriot",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1707962379561,
+      "tag": "0008_sad_thor",
+      "breakpoints": true
     }
   ]
 }

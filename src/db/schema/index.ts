@@ -18,10 +18,14 @@ export const wilayah = pgTable("wilayah", {
 
 export const ppwpTps = pgTable("ppwp_tps", {
   kode: text("kode").primaryKey(),
-  provinsi: text("provinsi").notNull(),
-  kabupaten_kota: text("kabupaten_kota").notNull(),
-  kecamatan: text("kecamatan").notNull(),
-  kelurahan_desa: text("kelurahan_desa").notNull(),
+  provinsi_kode: text("provinsi_kode").notNull(),
+  provinsi_nama: text("provinsi_nama"),
+  kabupaten_kota_kode: text("kabupaten_kota_kode").notNull(),
+  kabupaten_kota_nama: text("kabupaten_kota_nama"),
+  kecamatan_kode: text("kecamatan_kode").notNull(),
+  kecamatan_nama: text("kecamatan_nama"),
+  kelurahan_desa_kode: text("kelurahan_desa_kode").notNull(),
+  kelurahan_desa_nama: text("kelurahan_desa_nama"),
   tps: text("tps").notNull(),
   suara_paslon_1: integer("suara_paslon_1"),
   suara_paslon_2: integer("suara_paslon_2"),
