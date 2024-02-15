@@ -105,10 +105,10 @@ export const getTpsDetailV2 = async () => {
   logger.info(`Successfully queried data for TPS: ${count} rows`);
 
   const concurrent = new ConcurrentManager({
-    concurrent: 20,
+    concurrent: 30,
   });
 
-  const batching = 50;
+  const batching = 100;
   const batch = [] as (typeof listTps)[];
 
   // push tps to batch
