@@ -35,10 +35,10 @@ export const getTpsDetail = async () => {
         async (trx) => {
           const insert = await trx.insert(dbSchema.ppwpTps).values({
             kode: tps.kode,
-            provinsi: tps.kode.substring(0, 2),
-            kabupaten_kota: tps.kode.substring(0, 4),
-            kecamatan: tps.kode.substring(0, 6),
-            kelurahan_desa: tps.kode.substring(0, 10),
+            provinsi_kode: tps.kode.substring(0, 2),
+            kabupaten_kota_kode: tps.kode.substring(0, 4),
+            kecamatan_kode: tps.kode.substring(0, 6),
+            kelurahan_desa_kode: tps.kode.substring(0, 10),
             tps: tps.kode.substring(10, 13),
             suara_paslon_1: nullGuard(response.chart?.["100025"]),
             suara_paslon_2: nullGuard(response.chart?.["100026"]),
@@ -144,10 +144,10 @@ export const getTpsDetailV2 = async () => {
             bucketResponse.map((response, i) => {
               return {
                 kode: response.kode,
-                provinsi: response.kode.substring(0, 2),
-                kabupaten_kota: response.kode.substring(0, 4),
-                kecamatan: response.kode.substring(0, 6),
-                kelurahan_desa: response.kode.substring(0, 10),
+                provinsi_kode: response.kode.substring(0, 2),
+                kabupaten_kota_kode: response.kode.substring(0, 4),
+                kecamatan_kode: response.kode.substring(0, 6),
+                kelurahan_desa_kode: response.kode.substring(0, 10),
                 tps: response.kode.substring(10, 13),
                 suara_paslon_1: nullGuard(response.chart?.["100025"]),
                 suara_paslon_2: nullGuard(response.chart?.["100026"]),
