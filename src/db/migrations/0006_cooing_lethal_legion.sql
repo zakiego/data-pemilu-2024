@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_tps" ADD COLUMN "url" text;

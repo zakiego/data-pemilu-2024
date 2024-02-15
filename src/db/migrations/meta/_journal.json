@@ -43,6 +43,13 @@
       "when": 1707961245496,
       "tag": "0005_nifty_russian",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1707961919870,
+      "tag": "0006_cooing_lethal_legion",
+      "breakpoints": true
     }
   ]
 }
