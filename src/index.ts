@@ -1,4 +1,8 @@
-import { getTpsDetail, getTpsDetailV2 } from "@/actions/get-tps-detail";
+import {
+  getTpsDetail,
+  getTpsDetailV2,
+  updateTpsDetail,
+} from "@/actions/get-tps-detail";
 import { getWilayah } from "@/actions/get-wilayah";
 
 const args = process.argv;
@@ -13,6 +17,9 @@ switch (command) {
     break;
   case "get-tps-detail-2":
     await getTpsDetailV2();
+    break;
+  case "update-tps-detail":
+    await updateTpsDetail();
     break;
   default:
     console.log("Command not recognized");
