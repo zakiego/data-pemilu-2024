@@ -215,17 +215,20 @@ export const getTpsDetailV2 = async () => {
 
 export const updateTpsDetail = async () => {
   const listTps = await dbClient.query.ppwpTps.findMany({
-    where: (table, { eq, and }) =>
-      or(eq(table.status_suara, false), eq(table.status_adm, false)),
+    // where: (table, { eq, and }) =>
+    //   or(eq(table.status_suara, false), eq(table.status_adm, false)),
     orderBy: (table, { asc }) => asc(table.updated_at),
-    limit: 100_000,
+    // limit: 10,
+    columns: {
+      kode: true,
+    },
   });
   const count = listTps.length;
 
   logger.info(`Successfully queried data for TPS: ${listTps.length} rows`);
 
   const concurrent = new ConcurrentManager({
-    concurrent: 50,
+    concurrent: 2,
   });
 
   for (let i = 0; i < listTps.length; i++) {
