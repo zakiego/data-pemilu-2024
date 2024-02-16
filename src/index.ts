@@ -60,4 +60,11 @@ dpr
     await dprActions.insertTpsDetailV2();
   });
 
+dpr
+  .command("update-tps-detail")
+  .description("Update TPS detail")
+  .action(async () => {
+    await dprActions.updateTpsDetail();
+  });
+
 program.parse();
