@@ -4,35 +4,48 @@ import {
   updateTpsDetail,
 } from "@/actions/get-tps-detail";
 import { getWilayah } from "@/actions/get-wilayah";
+import { Command } from "commander";
+import { z } from "zod";
 
-const args = process.argv;
-const election = args[2] as Election;
-const command = args[3];
+const program = new Command();
 
-type Election = "pilpres" | "dpr" | "dpd" | "dprd-prov" | "dprd-kabkot";
+// ----------------- Options -----------------
+program.option("-c, --concurrent <number>", "Concurrent", "5").parse();
+export const options = z
+  .object({
+    concurrent: z.coerce.number(),
+  })
+  .parse(program.opts());
 
-switch (election) {
-  case "pilpres":
-    switch (command) {
-      case "get-wilayah":
-        await getWilayah();
-        break;
-      case "get-tps-detail":
-        await getTpsDetail();
-        break;
-      case "get-tps-detail-2":
-        await getTpsDetailV2();
-        break;
-      case "update-tps-detail":
-        await updateTpsDetail();
-        break;
-      default:
-        console.log("Command not recognized");
-        break;
-    }
-    break;
-  case "dpr":
-  case "dpd":
-  case "dprd-prov":
-  case "dprd-kabkot":
-}
+// ----------------- Pilpres -----------------
+const pilpres = program.command("pilpres").description("Pilpres");
+
+pilpres
+  .command("get-wilayah")
+  .description("Get wilayah")
+  .action(async () => {
+    await getWilayah();
+  });
+
+pilpres
+  .command("get-tps-detail")
+  .description("Get TPS detail")
+  .action(async () => {
+    await getTpsDetail();
+  });
+
+pilpres
+  .command("get-tps-detail-v2")
+  .description("Get TPS detail v2")
+  .action(async () => {
+    await getTpsDetailV2();
+  });
+
+pilpres
+  .command("update-tps-detail")
+  .description("Update TPS detail")
+  .action(async () => {
+    await updateTpsDetail();
+  });
+
+program.parse();

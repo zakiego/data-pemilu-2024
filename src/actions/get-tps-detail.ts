@@ -1,8 +1,8 @@
 import { dbClient, dbSchema } from "@/db";
 import { ENDPOINT_FUNCTION } from "@/endpoint";
+import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
-import ConcurrentManager from "concurrent-manager";
 import { eq, inArray, or } from "drizzle-orm";
 
 export const getTpsDetail = async () => {
@@ -15,9 +15,7 @@ export const getTpsDetail = async () => {
 
   logger.info(`Successfully queried data for TPS: ${listTps.length} rows`);
 
-  const concurrent = new ConcurrentManager({
-    concurrent: 500,
-  });
+  const concurrent = createConcurrentManager();
 
   for (let i = 0; i < listTps.length; i++) {
     concurrent.queue(async () => {
@@ -104,9 +102,7 @@ export const getTpsDetailV2 = async () => {
 
   logger.info(`Successfully queried data for TPS: ${count} rows`);
 
-  const concurrent = new ConcurrentManager({
-    concurrent: 30,
-  });
+  const concurrent = createConcurrentManager();
 
   const batching = 100;
   const batch = [] as (typeof listTps)[];
@@ -218,7 +214,7 @@ export const updateTpsDetail = async () => {
     // where: (table, { eq, and }) =>
     //   or(eq(table.status_suara, false), eq(table.status_adm, false)),
     orderBy: (table, { asc }) => asc(table.updated_at),
-    // limit: 10,
+    limit: 30,
     columns: {
       kode: true,
     },
@@ -227,9 +223,7 @@ export const updateTpsDetail = async () => {
 
   logger.info(`Successfully queried data for TPS: ${listTps.length} rows`);
 
-  const concurrent = new ConcurrentManager({
-    concurrent: 2,
-  });
+  const concurrent = createConcurrentManager();
 
   for (let i = 0; i < listTps.length; i++) {
     concurrent.queue(async () => {

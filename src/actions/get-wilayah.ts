@@ -1,9 +1,10 @@
-import ConcurrentManager from "concurrent-manager";
 import { and, eq } from "drizzle-orm";
 import z from "zod";
 import { dbClient, dbSchema } from "@/db";
 import { logger } from "@/utils/log";
 import { ENDPOINT_FUNCTION } from "@/endpoint";
+import { options } from "@/index";
+import { createConcurrentManager } from "@/utils/concurrent";
 
 const wilayahFetcher = async (endpoint: string) => {
   const response = await fetch(endpoint).then((res) => res.json());
@@ -98,9 +99,7 @@ const getKecamatan = async () => {
   const count = listKabupatenKota.length;
   logger.info(`Successfully queried data for kecamatan: ${count} rows`);
 
-  const concurrent = new ConcurrentManager({
-    concurrent: 300,
-  });
+  const concurrent = createConcurrentManager();
 
   for (let i = 0; i < listKabupatenKota.length; i++) {
     concurrent.queue(async () => {
@@ -154,9 +153,7 @@ const getKelurahan = async () => {
   });
   const count = listKecamatan.length;
 
-  const concurrent = new ConcurrentManager({
-    concurrent: 500,
-  });
+  const concurrent = createConcurrentManager();
 
   for (let i = 0; i < listKecamatan.length; i++) {
     concurrent.queue(async () => {
@@ -214,9 +211,7 @@ const getTPS = async () => {
     `Successfully queried data for TPS: ${listKelurahan.length} rows`,
   );
 
-  const concurrent = new ConcurrentManager({
-    concurrent: 500,
-  });
+  const concurrent = createConcurrentManager();
 
   for (let i = 0; i < listKelurahan.length; i++) {
     concurrent.queue(async () => {
