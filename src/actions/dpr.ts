@@ -5,10 +5,15 @@ import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
 import { eq, inArray, sql } from "drizzle-orm";
 
+const QUERY = dbClient.query.pdprTps;
+const TPS_SCHEMA = dbSchema.pdprTps;
+const FETCH_FUNCTION = ENDPOINT_FUNCTION.dpr.get_detail_tps;
+const COLUMN_IS_FETCHED = dbSchema.wilayah.is_fetched_dpr;
+
 const insertTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 5), eq(table.is_fetched_dpr, false)),
+      and(eq(table.tingkat, 5), eq(COLUMN_IS_FETCHED, false)),
     columns: {
       kode: true,
     },
@@ -24,7 +29,7 @@ const insertTpsDetail = async () => {
     concurrent.queue(async () => {
       const tps = listTps[i];
 
-      const response = await ENDPOINT_FUNCTION.dpr.get_detail_tps(tps.kode);
+      const response = await FETCH_FUNCTION(tps.kode);
 
       logger.info(
         `${i + 1}/${count} - Successfully fetched data for TPS: ${tps.kode}`,
@@ -32,7 +37,7 @@ const insertTpsDetail = async () => {
 
       const insert_and_update_is_fetched = await dbClient.transaction(
         async (trx) => {
-          const insert = await trx.insert(dbSchema.pdprTps).values({
+          const insert = await trx.insert(TPS_SCHEMA).values({
             kode: tps.kode,
             provinsi_kode: tps.kode.substring(0, 2),
             kabupaten_kota_kode: tps.kode.substring(0, 4),
@@ -97,7 +102,7 @@ const insertTpsDetail = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched_dpr: true,
+              is_fetched_dpr: true, // ADJUST THIS!!!!
               updated_at: new Date(),
             })
             .where(eq(dbSchema.wilayah.kode, tps.kode));
@@ -120,7 +125,7 @@ const insertTpsDetail = async () => {
 export const insertTpsDetailV2 = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 5), eq(table.is_fetched_dpr, false)),
+      and(eq(table.tingkat, 5), eq(COLUMN_IS_FETCHED, false)),
     columns: {
       kode: true,
     },
@@ -148,22 +153,21 @@ export const insertTpsDetailV2 = async () => {
   for (let i = 0; i < countBatch; i++) {
     concurrent.queue(async () => {
       const singleBatch = batch[i];
-      const getTpsDetail = ENDPOINT_FUNCTION.dpr.get_detail_tps;
       const bucketResponse = [] as Array<
-        Awaited<ReturnType<typeof getTpsDetail>> & {
+        Awaited<ReturnType<typeof FETCH_FUNCTION>> & {
           kode: string;
         }
       >;
 
       for (const tps of singleBatch) {
-        const response = await getTpsDetail(tps.kode);
+        const response = await FETCH_FUNCTION(tps.kode);
 
         bucketResponse.push({ ...response, kode: tps.kode });
       }
 
       const insert_and_update_is_fetched = await dbClient.transaction(
         async (trx) => {
-          const insert = await trx.insert(dbSchema.pdprTps).values(
+          const insert = await trx.insert(TPS_SCHEMA).values(
             bucketResponse.map((response, i) => {
               return {
                 kode: response.kode,
@@ -232,7 +236,7 @@ export const insertTpsDetailV2 = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched_dpr: true,
+              is_fetched_dpr: true, // ADJUST THIS!!!!
               updated_at: new Date(),
             })
             .where(
@@ -260,7 +264,7 @@ export const insertTpsDetailV2 = async () => {
 };
 
 export const updateTpsDetail = async () => {
-  const listTps = await dbClient.query.pdprTps.findMany({
+  const listTps = await QUERY.findMany({
     orderBy: (table, { asc }) => asc(table.updated_at),
     columns: {
       kode: true,
@@ -276,7 +280,7 @@ export const updateTpsDetail = async () => {
     concurrent.queue(async () => {
       const tps = listTps[i];
 
-      const response = await ENDPOINT_FUNCTION.dpr.get_detail_tps(tps.kode);
+      const response = await FETCH_FUNCTION(tps.kode);
 
       logger.info(
         `${i + 1}/${count} - Successfully fetched data for TPS: ${tps.kode}`,
@@ -285,7 +289,7 @@ export const updateTpsDetail = async () => {
       const insert_and_update_is_fetched = await dbClient.transaction(
         async (trx) => {
           const update = await trx
-            .update(dbSchema.pdprTps)
+            .update(TPS_SCHEMA)
             .set({
               suara_partai_1: nullGuard(response.chart?.["1"]),
               suara_partai_2: nullGuard(response.chart?.["2"]),
@@ -338,9 +342,9 @@ export const updateTpsDetail = async () => {
               status_adm: response.administrasi !== null,
 
               updated_at: new Date(),
-              fetch_count: sql`${dbSchema.pdprTps.fetch_count} + 1`,
+              fetch_count: sql`${TPS_SCHEMA.fetch_count} + 1`,
             })
-            .where(eq(dbSchema.pdprTps.kode, tps.kode))
+            .where(eq(TPS_SCHEMA.kode, tps.kode))
             .returning();
 
           return update;
