@@ -12,7 +12,15 @@ export const wilayah = pgTable("wilayah", {
   kode: text("kode").notNull(),
   nama: text("nama").notNull(),
   tingkat: integer("tingkat").notNull(),
-  is_fetched: boolean("is_fetched").default(false),
+
+  is_fetched_presiden: boolean("is_fetched_presiden").default(false),
+  is_fetched_dpr: boolean("is_fetched_dpr").default(false),
+  is_fetched_dpd: boolean("is_fetched_dpd").default(false),
+  is_fetched_dprd_provinsi: boolean("is_fetched_dprd_provinsi").default(false),
+  is_fetched_dprd_kabupaten_kota: boolean(
+    "is_fetched_dprd_kabupaten_kota",
+  ).default(false),
+
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
 });

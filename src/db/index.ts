@@ -1,4 +1,4 @@
-import { ppwpTps, wilayah } from "@/db/schema";
+import { pdprTps, ppwpTps, wilayah } from "@/db/schema";
 import { env } from "@/utils/env";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
@@ -6,6 +6,7 @@ import postgres from "postgres";
 export const dbSchema = {
   wilayah,
   ppwpTps,
+  pdprTps,
 };
 
 export const migrationClient = drizzle(postgres(env.DATABASE_URL, { max: 1 }));
