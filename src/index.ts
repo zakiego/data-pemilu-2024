@@ -1,3 +1,4 @@
+import { dprActions } from "@/actions/dpr";
 import {
   getTpsDetail,
   getTpsDetailV2,
@@ -46,6 +47,17 @@ pilpres
   .description("Update TPS detail")
   .action(async () => {
     await updateTpsDetail();
+  });
+
+// ----------------- DPR -----------------
+
+const dpr = program.command("dpr").description("DPR");
+
+dpr
+  .command("insert-tps-detail")
+  .description("Insert TPS detail")
+  .action(async () => {
+    await dprActions.insertTpsDetail();
   });
 
 program.parse();
