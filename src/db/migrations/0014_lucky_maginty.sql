@@ -1,0 +1,1 @@
+ALTER TABLE "pdpr_tps" DROP COLUMN IF EXISTS "images";

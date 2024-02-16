@@ -134,7 +134,7 @@ export const pdprTps = pgTable("pdpr_tps", {
   suara_partai_23: integer("suara_partai_23"),
   suara_partai_24: integer("suara_partai_24"),
 
-  images: json("images"),
+  images: text("images").array(),
 
   suara_sah: integer("suara_sah"),
   suara_total: integer("suara_total"),
