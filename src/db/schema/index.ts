@@ -94,7 +94,7 @@ export const ppwpTps = pgTable("ppwp_tps", {
   url_api: text("url_api"),
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
-  // update_count: integer("fetch_count").default(0),
+  fetch_count: integer("fetch_count").default(0),
 });
 
 export const pdprTps = pgTable("pdpr_tps", {
@@ -163,5 +163,5 @@ export const pdprTps = pgTable("pdpr_tps", {
   url_api: text("url_api"),
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
-  update_count: integer("fetch_count").default(0),
+  fetch_count: integer("fetch_count").default(0),
 });
