@@ -11,10 +11,15 @@ import { z } from "zod";
 const program = new Command();
 
 // ----------------- Options -----------------
-program.option("-c, --concurrent <number>", "Concurrent", "5").parse();
+program
+  .option("-c, --concurrent <number>", "Concurrent", "5")
+  .option("-l, --limit <number>", "Set limit")
+  .parse();
+
 export const options = z
   .object({
     concurrent: z.coerce.number(),
+    limit: z.coerce.number().optional(),
   })
   .parse(program.opts());
 

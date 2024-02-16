@@ -1,5 +1,6 @@
 import { dbClient, dbSchema } from "@/db";
 import { ENDPOINT_FUNCTION } from "@/endpoint";
+import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
@@ -9,6 +10,7 @@ export const getTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
       and(eq(table.tingkat, 5), eq(table.is_fetched, false)),
+    limit: options.limit,
   });
   const count = listTps.length;
 
@@ -96,6 +98,7 @@ export const getTpsDetailV2 = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
       and(eq(table.tingkat, 5), eq(table.is_fetched, false)),
+    limit: options.limit,
   });
   const count = listTps.length;
 
@@ -214,6 +217,7 @@ export const updateTpsDetail = async () => {
     columns: {
       kode: true,
     },
+    limit: options.limit,
   });
   const count = listTps.length;
 

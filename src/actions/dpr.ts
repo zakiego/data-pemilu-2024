@@ -1,5 +1,6 @@
 import { dbClient, dbSchema } from "@/db";
 import { ENDPOINT_FUNCTION } from "@/endpoint";
+import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
@@ -17,6 +18,7 @@ const insertTpsDetail = async () => {
     columns: {
       kode: true,
     },
+    limit: options.limit,
   });
 
   const count = listTps.length;
@@ -129,6 +131,7 @@ export const insertTpsDetailV2 = async () => {
     columns: {
       kode: true,
     },
+    limit: options.limit,
   });
   const count = listTps.length;
 
@@ -269,6 +272,7 @@ export const updateTpsDetail = async () => {
     columns: {
       kode: true,
     },
+    limit: options.limit,
   });
   const count = listTps.length;
 
