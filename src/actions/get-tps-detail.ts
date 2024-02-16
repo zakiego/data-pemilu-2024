@@ -9,7 +9,6 @@ export const getTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
       and(eq(table.tingkat, 5), eq(table.is_fetched, false)),
-    // limit: 1000,
   });
   const count = listTps.length;
 
@@ -211,10 +210,7 @@ export const getTpsDetailV2 = async () => {
 
 export const updateTpsDetail = async () => {
   const listTps = await dbClient.query.ppwpTps.findMany({
-    // where: (table, { eq, and }) =>
-    //   or(eq(table.status_suara, false), eq(table.status_adm, false)),
     orderBy: (table, { asc }) => asc(table.updated_at),
-    limit: 30,
     columns: {
       kode: true,
     },
