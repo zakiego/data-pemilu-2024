@@ -57,7 +57,7 @@ dpr
   .command("insert-tps-detail")
   .description("Insert TPS detail")
   .action(async () => {
-    await dprActions.insertTpsDetail();
+    await dprActions.insertTpsDetailV2();
   });
 
 program.parse();
