@@ -3,7 +3,7 @@ import { ENDPOINT_FUNCTION } from "@/endpoint";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
-import { eq, inArray, or } from "drizzle-orm";
+import { eq, inArray, or, sql } from "drizzle-orm";
 
 export const getTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
@@ -305,7 +305,9 @@ export const updateTpsDetail = async () => {
               ts: response.ts,
               status_suara: response.chart !== null,
               status_adm: response.administrasi !== null,
+
               updated_at: new Date(),
+              fetch_count: sql`${dbSchema.ppwpTps.fetch_count} + 1`,
             })
             .where(eq(dbSchema.ppwpTps.kode, tps.kode))
             .returning();
