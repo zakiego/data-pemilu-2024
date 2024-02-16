@@ -61,4 +61,4 @@ You can see all available here: [src/index.ts](src/index.ts)
 - `bun start pilpres get-tps-detail`
 - `bun start pilpres get-tps-detail-2`
 - `bun start pilpres update-tps-detail`
-
+- others command still in development
