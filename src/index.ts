@@ -1,9 +1,5 @@
 import { dprActions } from "@/actions/dpr";
-import {
-  getTpsDetail,
-  getTpsDetailV2,
-  updateTpsDetail,
-} from "@/actions/get-tps-detail";
+import { presidenActions } from "@/actions/presiden";
 import { getWilayah } from "@/actions/get-wilayah";
 import { Command } from "commander";
 import { z } from "zod";
@@ -37,21 +33,21 @@ pilpres
   .command("get-tps-detail")
   .description("Get TPS detail")
   .action(async () => {
-    await getTpsDetail();
+    await presidenActions.insertTpsDetail();
   });
 
 pilpres
   .command("get-tps-detail-v2")
   .description("Get TPS detail v2")
   .action(async () => {
-    await getTpsDetailV2();
+    await presidenActions.insertTpsDetailV2();
   });
 
 pilpres
   .command("update-tps-detail")
   .description("Update TPS detail")
   .action(async () => {
-    await updateTpsDetail();
+    await presidenActions.updateTpsDetail();
   });
 
 // ----------------- DPR -----------------

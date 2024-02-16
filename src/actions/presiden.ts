@@ -6,10 +6,15 @@ import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
 import { eq, inArray, or, sql } from "drizzle-orm";
 
-export const getTpsDetail = async () => {
+const QUERY = dbClient.query.ppwpTps;
+const TPS_SCHEMA = dbSchema.ppwpTps;
+const FETCH_TPS = ENDPOINT_FUNCTION.presiden.get_detail_tps;
+const COLUMN_IS_FETCHED = dbSchema.wilayah.is_fetched_presiden;
+
+const insertTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 5), eq(table.is_fetched, false)),
+      and(eq(table.tingkat, 5), eq(COLUMN_IS_FETCHED, false)),
     limit: options.limit,
   });
   const count = listTps.length;
@@ -22,9 +27,7 @@ export const getTpsDetail = async () => {
     concurrent.queue(async () => {
       const tps = listTps[i];
 
-      const response = await ENDPOINT_FUNCTION.pilpres.wilayah.get_detail_tps(
-        tps.kode,
-      );
+      const response = await FETCH_TPS(tps.kode);
 
       logger.info(
         `${i + 1}/${count} - Successfully fetched data for TPS: ${tps.kode}`,
@@ -74,7 +77,7 @@ export const getTpsDetail = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched: true,
+              is_fetched_presiden: true, // !!ADJUST THIS!!
               updated_at: new Date(),
             })
             .where(eq(dbSchema.wilayah.kode, tps.kode));
@@ -94,10 +97,10 @@ export const getTpsDetail = async () => {
   process.exit(0);
 };
 
-export const getTpsDetailV2 = async () => {
+const insertTpsDetailV2 = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 5), eq(table.is_fetched, false)),
+      and(eq(table.tingkat, 5), eq(COLUMN_IS_FETCHED, false)),
     limit: options.limit,
   });
   const count = listTps.length;
@@ -123,15 +126,15 @@ export const getTpsDetailV2 = async () => {
   for (let i = 0; i < countBatch; i++) {
     concurrent.queue(async () => {
       const singleBatch = batch[i];
-      const getTpsDetail = ENDPOINT_FUNCTION.pilpres.wilayah.get_detail_tps;
+
       const bucketResponse = [] as Array<
-        Awaited<ReturnType<typeof getTpsDetail>> & {
+        Awaited<ReturnType<typeof FETCH_TPS>> & {
           kode: string;
         }
       >;
 
       for (const tps of singleBatch) {
-        const response = await getTpsDetail(tps.kode);
+        const response = await FETCH_TPS(tps.kode);
 
         bucketResponse.push({ ...response, kode: tps.kode });
       }
@@ -184,7 +187,7 @@ export const getTpsDetailV2 = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched: true,
+              is_fetched_presiden: true, // !!ADJUST THIS!!
               updated_at: new Date(),
             })
             .where(
@@ -211,7 +214,7 @@ export const getTpsDetailV2 = async () => {
   process.exit(0);
 };
 
-export const updateTpsDetail = async () => {
+const updateTpsDetail = async () => {
   const listTps = await dbClient.query.ppwpTps.findMany({
     orderBy: (table, { asc }) => asc(table.updated_at),
     columns: {
@@ -229,9 +232,7 @@ export const updateTpsDetail = async () => {
     concurrent.queue(async () => {
       const tps = listTps[i];
 
-      const response = await ENDPOINT_FUNCTION.pilpres.wilayah.get_detail_tps(
-        tps.kode,
-      );
+      const response = await FETCH_TPS(tps.kode);
 
       logger.info(
         `${i + 1}/${count} - Successfully fetched data for TPS: ${tps.kode}`,
@@ -329,4 +330,10 @@ export const updateTpsDetail = async () => {
   await concurrent.run();
 
   process.exit(0);
+};
+
+export const presidenActions = {
+  insertTpsDetail,
+  insertTpsDetailV2,
+  updateTpsDetail,
 };

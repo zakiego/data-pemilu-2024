@@ -8,7 +8,7 @@ import { eq, inArray, sql } from "drizzle-orm";
 
 const QUERY = dbClient.query.pdprTps;
 const TPS_SCHEMA = dbSchema.pdprTps;
-const FETCH_FUNCTION = ENDPOINT_FUNCTION.dpr.get_detail_tps;
+const FECTH_TPS = ENDPOINT_FUNCTION.dpr.get_detail_tps;
 const COLUMN_IS_FETCHED = dbSchema.wilayah.is_fetched_dpr;
 
 const insertTpsDetail = async () => {
@@ -31,7 +31,7 @@ const insertTpsDetail = async () => {
     concurrent.queue(async () => {
       const tps = listTps[i];
 
-      const response = await FETCH_FUNCTION(tps.kode);
+      const response = await FECTH_TPS(tps.kode);
 
       logger.info(
         `${i + 1}/${count} - Successfully fetched data for TPS: ${tps.kode}`,
@@ -157,13 +157,13 @@ export const insertTpsDetailV2 = async () => {
     concurrent.queue(async () => {
       const singleBatch = batch[i];
       const bucketResponse = [] as Array<
-        Awaited<ReturnType<typeof FETCH_FUNCTION>> & {
+        Awaited<ReturnType<typeof FECTH_TPS>> & {
           kode: string;
         }
       >;
 
       for (const tps of singleBatch) {
-        const response = await FETCH_FUNCTION(tps.kode);
+        const response = await FECTH_TPS(tps.kode);
 
         bucketResponse.push({ ...response, kode: tps.kode });
       }
@@ -284,7 +284,7 @@ export const updateTpsDetail = async () => {
     concurrent.queue(async () => {
       const tps = listTps[i];
 
-      const response = await FETCH_FUNCTION(tps.kode);
+      const response = await FECTH_TPS(tps.kode);
 
       logger.info(
         `${i + 1}/${count} - Successfully fetched data for TPS: ${tps.kode}`,

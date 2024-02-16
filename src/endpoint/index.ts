@@ -2,10 +2,10 @@ import { dpd } from "@/endpoint/dpd";
 import { dpr } from "@/endpoint/dpr";
 import { dprdKabupatenKota } from "@/endpoint/dprd-kab-kota";
 import { dprdProvinsi } from "@/endpoint/dprd-provinsi";
-import { pilpres } from "@/endpoint/pilpres";
+import { presiden } from "@/endpoint/presiden";
 
 export const ENDPOINT_FUNCTION = {
-  pilpres,
+  presiden,
   dpr,
   dprdProvinsi,
   dprdKabupatenKota,
