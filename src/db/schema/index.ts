@@ -8,6 +8,31 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
+export const partai = pgTable(
+  "partai",
+  {
+    id_partai: integer("id_partai").primaryKey(),
+    id_pilihan: integer("id_pilihan").notNull(),
+    is_aceh: boolean("is_aceh").notNull(),
+    nama: text("nama").notNull(),
+    nama_lengkap: text("nama_lengkap").notNull(),
+    nomor_urut: integer("nomor_urut").notNull(),
+    warna: text("warna").notNull(),
+    ts: text("ts").notNull(),
+
+    updated_at: timestamp("updated_at").defaultNow(),
+    created_at: timestamp("created_at").defaultNow(),
+  },
+  (table) => {
+    return {
+      id_pilihan_index: index("id_pilihan_index").on(table.id_pilihan),
+      is_aceh_index: index("is_aceh_index").on(table.is_aceh),
+      nomor_urut_index: index("nomor_urut_index").on(table.nomor_urut),
+      nama_index: index("nama_index").on(table.nama),
+    };
+  },
+);
+
 export const wilayah = pgTable(
   "wilayah",
   {
@@ -163,5 +188,15 @@ export const pdprTps = pgTable("pdpr_tps", {
   url_api: text("url_api"),
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
+  fetch_count: integer("fetch_count").default(0),
+});
+
+export const pdprDapilList = pgTable("pdpr_dapil_list", {
+  id: integer("id").primaryKey(),
+  nama: text("nama").notNull(),
+  kode: text("kode").notNull(),
+  updated_at: timestamp("updated_at").defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
+
   fetch_count: integer("fetch_count").default(0),
 });
