@@ -9,3 +9,5 @@ const queryClient = postgres(env.DATABASE_URL, { max: 25 });
 export const dbClient = drizzle(queryClient, {
   schema: dbSchema,
 });
+
+export { dbSchema };
