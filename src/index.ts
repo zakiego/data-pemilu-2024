@@ -3,6 +3,7 @@ import { presidenActions } from "@/actions/presiden";
 import { getWilayah } from "@/actions/get-wilayah";
 import { Command } from "commander";
 import { z } from "zod";
+import { partaiAction } from "@/actions/partai";
 
 const program = new Command();
 
@@ -18,6 +19,16 @@ export const options = z
     limit: z.coerce.number().optional(),
   })
   .parse(program.opts());
+
+// ----------------- Partai -----------------
+const partai = program.command("partai").description("Partai");
+
+partai
+  .command("get-partai-list")
+  .description("Get partai list")
+  .action(async () => {
+    await partaiAction.inserPartaiList();
+  });
 
 // ----------------- Pilpres -----------------
 const pilpres = program.command("pilpres").description("Pilpres");
@@ -66,6 +77,13 @@ dpr
   .description("Update TPS detail")
   .action(async () => {
     await dprActions.updateTpsDetail();
+  });
+
+dpr
+  .command("insert-dapil-list")
+  .description("Insert Dapil")
+  .action(async () => {
+    await dprActions.insertDapilList();
   });
 
 program.parse();
