@@ -1,0 +1,1 @@
+ALTER TABLE "pdpr_dapil_list" ADD COLUMN "is_calon_fetched" boolean DEFAULT false;

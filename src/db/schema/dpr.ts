@@ -85,4 +85,5 @@ export const pdprDapilList = pgTable("pdpr_dapil_list", {
   created_at: timestamp("created_at").defaultNow(),
 
   fetch_count: integer("fetch_count").default(0),
+  is_calon_fetched: boolean("is_calon_fetched").default(false),
 });
