@@ -87,3 +87,15 @@ export const pdprDapilList = pgTable("pdpr_dapil_list", {
   fetch_count: integer("fetch_count").default(0),
   is_calon_fetched: boolean("is_calon_fetched").default(false),
 });
+
+export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list", {
+  nama: text("nama").notNull(),
+  jenis_kelamin: text("jenis_kelamin").notNull(),
+  tempat_tinggal: text("tempat_tinggal").notNull(),
+  calon_id: text("calon_id").primaryKey(),
+  partai_id: text("partai_id").notNull(),
+  nomor_urut_calon_di_partai: integer("nomor_urut_calon_di_partai").notNull(),
+
+  updated_at: timestamp("updated_at").defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
+});
