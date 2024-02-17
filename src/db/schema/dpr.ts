@@ -96,6 +96,8 @@ export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list", {
   partai_id: text("partai_id").notNull(),
   nomor_urut_calon_di_partai: integer("nomor_urut_calon_di_partai").notNull(),
 
+  jumlah_suara: integer("jumlah_suara"),
+
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
 });
