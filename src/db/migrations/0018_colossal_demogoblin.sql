@@ -1,0 +1,1 @@
+ALTER TABLE "pdpr_dapil_list" ADD COLUMN "fetch_count" integer DEFAULT 0;
