@@ -54,4 +54,17 @@ export const dpr = {
 
     return data;
   },
+  getDapiList: async () => {
+    const url =
+      "https://sirekap-obj-data.kpu.go.id/wilayah/pemilu/pdpr/dapil_dpr.json";
+    const schema = z.array(
+      z.object({
+        id: z.number(),
+        nama: z.string(),
+        kode: z.string(),
+      }),
+    );
+    const data = await strictFetch(url, schema);
+    return data;
+  },
 };

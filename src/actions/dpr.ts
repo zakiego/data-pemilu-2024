@@ -8,7 +8,9 @@ import { eq, inArray, sql } from "drizzle-orm";
 
 const QUERY = dbClient.query.pdprTps;
 const TPS_SCHEMA = dbSchema.pdprTps;
+const DAPIL_LIST_SCHEMA = dbSchema.pdprDapilList;
 const FECTH_TPS = ENDPOINT_FUNCTION.dpr.get_detail_tps;
+const FETCH_DAPIL_LIST = ENDPOINT_FUNCTION.dpr.getDapiList;
 const COLUMN_IS_FETCHED = dbSchema.wilayah.is_fetched_dpr;
 
 const insertTpsDetail = async () => {
@@ -366,8 +368,24 @@ export const updateTpsDetail = async () => {
   process.exit(0);
 };
 
+export const insertDapilList = async () => {
+  const response = await FETCH_DAPIL_LIST();
+  logger.info(`Successfully fetched data for Dapil: ${response.length} rows`);
+
+  const insert = await dbClient
+    .insert(DAPIL_LIST_SCHEMA)
+    .values(response)
+    .onConflictDoNothing()
+    .returning();
+
+  logger.info(`Successfully inserted data for Dapil: ${insert.length} rows`);
+
+  process.exit(0);
+};
+
 export const dprActions = {
   insertTpsDetail,
   insertTpsDetailV2,
   updateTpsDetail,
+  insertDapilList,
 };
