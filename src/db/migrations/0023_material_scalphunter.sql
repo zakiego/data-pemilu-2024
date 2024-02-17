@@ -1,0 +1,1 @@
+ALTER TABLE "pdpr_dapil_calon_list" ADD COLUMN "dapil_kode" text NOT NULL;

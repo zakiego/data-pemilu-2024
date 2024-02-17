@@ -162,6 +162,13 @@
       "when": 1708190038467,
       "tag": "0022_superb_karma",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1708191432849,
+      "tag": "0023_material_scalphunter",
+      "breakpoints": true
     }
   ]
 }
