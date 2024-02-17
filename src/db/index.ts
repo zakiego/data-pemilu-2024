@@ -1,13 +1,32 @@
 import { dbSchema } from "@/db/schema";
 import { env } from "@/utils/env";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
 export const migrationClient = drizzle(postgres(env.DATABASE_URL, { max: 1 }));
 
-const queryClient = postgres(env.DATABASE_URL, { max: 25 });
-export const dbClient = drizzle(queryClient, {
-  schema: dbSchema,
-});
+// const queryClient = postgres(env.DATABASE_URL, { max: 25 });
+// export const dbClient = drizzle(queryClient, {
+//   schema: dbSchema,
+// });
 
 export { dbSchema };
+
+declare global {
+  // biome-ignore lint/style/noVar: <explanation>
+  var db: PostgresJsDatabase<typeof dbSchema> | undefined;
+}
+
+// biome-ignore lint/suspicious/noRedeclare: <explanation>
+let db: PostgresJsDatabase<typeof dbSchema>;
+
+if (env.NODE_ENV === "production") {
+  db = drizzle(postgres(env.DATABASE_URL), { schema: dbSchema });
+} else {
+  if (!global.db)
+    global.db = drizzle(postgres(env.DATABASE_URL), { schema: dbSchema });
+
+  db = global.db;
+}
+
+export const dbClient = db;
