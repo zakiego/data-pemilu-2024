@@ -1,3 +1,4 @@
+import { wilayah } from "@/db/schema/wilayah";
 import {
   boolean,
   index,

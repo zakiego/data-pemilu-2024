@@ -16,14 +16,14 @@ export const wilayah = pgTable(
     nama: text("nama").notNull(),
     tingkat: integer("tingkat").notNull(),
 
-    is_fetched_presiden: boolean("is_fetched_presiden").default(false),
-    is_fetched_dpr: boolean("is_fetched_dpr").default(false),
-    is_fetched_dpd: boolean("is_fetched_dpd").default(false),
-    is_fetched_dprd_provinsi: boolean("is_fetched_dprd_provinsi").default(
+    is_fetched_presiden: boolean("_is_fetched_presiden").default(false),
+    is_fetched_dpr: boolean("_is_fetched_dpr").default(false),
+    is_fetched_dpd: boolean("_is_fetched_dpd").default(false),
+    is_fetched_dprd_provinsi: boolean("_is_fetched_dprd_provinsi").default(
       false,
     ),
     is_fetched_dprd_kabupaten_kota: boolean(
-      "is_fetched_dprd_kabupaten_kota",
+      "_is_fetched_dprd_kabupaten_kota",
     ).default(false),
 
     updated_at: timestamp("updated_at").defaultNow(),

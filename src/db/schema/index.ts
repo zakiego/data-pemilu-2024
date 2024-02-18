@@ -1,3 +1,9 @@
+import {
+  pdpdCalonList,
+  pdpdTpsAdministrasi,
+  pdpdTpsChart,
+  pdpdTpsList,
+} from "@/db/schema/dpd";
 import { pdprDapilCalonList, pdprDapilList, pdprTps } from "@/db/schema/dpr";
 import { partai } from "@/db/schema/partai";
 import { ppwpTps } from "@/db/schema/presiden";
@@ -10,4 +16,10 @@ export const dbSchema = {
   pdprDapilList,
   pdprDapilCalonList,
   partai,
+
+  // ----------------- DPD -----------------
+  pdpdTpsList,
+  pdpdCalonList,
+  pdpdTpsAdministrasi,
+  pdpdTpsChart,
 };

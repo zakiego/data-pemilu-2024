@@ -1,0 +1,1 @@
+ALTER TABLE "pdpd_dapil_list" RENAME TO "pdpd_calon_list";

@@ -183,6 +183,69 @@
       "when": 1708230008697,
       "tag": "0025_yummy_echo",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1708232733058,
+      "tag": "0026_sweet_wild_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "5",
+      "when": 1708234006878,
+      "tag": "0027_clammy_secret_warriors",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "5",
+      "when": 1708234443914,
+      "tag": "0028_abnormal_william_stryker",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "5",
+      "when": 1708234972857,
+      "tag": "0029_lowly_warpath",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1708235223368,
+      "tag": "0030_demonic_mongu",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1708235315470,
+      "tag": "0031_serious_ben_urich",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1708235577563,
+      "tag": "0032_foamy_strong_guy",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1708246181004,
+      "tag": "0033_nervous_greymalkin",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1708246205610,
+      "tag": "0034_damp_lockheed",
+      "breakpoints": true
     }
   ]
 }

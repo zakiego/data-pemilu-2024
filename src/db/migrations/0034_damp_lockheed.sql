@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "pdpd_tps_list_updated_at_index" ON "pdpd_tps_list" ("updated_at");
