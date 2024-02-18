@@ -86,4 +86,18 @@ dpr
     await dprActions.insertDapilList();
   });
 
+dpr
+  .command("get-dapil-calon-list")
+  .description("Get Dapil Calon List")
+  .action(async () => {
+    await dprActions.getDapilCalonList();
+  });
+
+dpr
+  .command("update-dapil-calon-detail")
+  .description("Update Dapil Calon Detail")
+  .action(async () => {
+    await dprActions.updateDapilCalonDetail();
+  });
+
 program.parse();
