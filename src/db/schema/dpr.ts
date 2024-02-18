@@ -99,6 +99,7 @@ export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list", {
   jumlah_suara: integer("jumlah_suara"),
 
   dapil_kode: text("dapil_kode").notNull(),
+  ts: text("ts"),
 
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),

@@ -169,6 +169,13 @@
       "when": 1708191432849,
       "tag": "0023_material_scalphunter",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1708191736370,
+      "tag": "0024_sad_lord_tyger",
+      "breakpoints": true
     }
   ]
 }
