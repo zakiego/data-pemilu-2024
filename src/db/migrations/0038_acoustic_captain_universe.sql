@@ -1,0 +1,1 @@
+DROP TABLE "pdpd_tps_chart";

@@ -1,0 +1,1 @@
+ALTER TABLE "pdpd_tps_chart" ADD COLUMN "_id" text NOT NULL;

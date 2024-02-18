@@ -6,6 +6,7 @@ import {
   pgTable,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 import { ulid } from "ulidx";
 
@@ -81,16 +82,24 @@ export const pdpdTpsAdministrasi = pgTable("pdpd_tps_administrasi", {
   created_at: timestamp("created_at").defaultNow(),
 });
 
-export const pdpdTpsChart = pgTable("pdpd_tps_chart", {
-  calon_id: text("calon_id")
-    .primaryKey()
-    .references(() => pdpdCalonList.calon_id),
-  tps: text("tps").references(() => pdpdTpsAdministrasi.tps),
-  jumlah_suara: integer("jumlah_suara").notNull(),
+export const pdpdTpsChart = pgTable(
+  "pdpd_tps_chart",
+  {
+    _id: text("_id").primaryKey().$defaultFn(ulid),
+    calon_id: text("calon_id").references(() => pdpdCalonList.calon_id),
+    tps: text("tps").references(() => pdpdTpsList.kode),
+    jumlah_suara: integer("jumlah_suara").notNull(),
 
-  ts: text("ts").notNull(),
+    ts: text("ts").notNull(),
 
-  fetch_count: integer("fetch_count").default(0),
-  updated_at: timestamp("updated_at").defaultNow(),
-  created_at: timestamp("created_at").defaultNow(),
-});
+    fetch_count: integer("fetch_count").default(0),
+    updated_at: timestamp("updated_at").defaultNow(),
+    created_at: timestamp("created_at").defaultNow(),
+  },
+  (t) => ({
+    tps_calon_id_unique: unique("pdpd_tps_chart_tps_calon_id_unique").on(
+      t.tps,
+      t.calon_id,
+    ),
+  }),
+);

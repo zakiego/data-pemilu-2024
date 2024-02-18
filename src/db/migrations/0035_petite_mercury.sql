@@ -1,0 +1,1 @@
+ALTER TABLE "pdpd_tps_chart" ADD CONSTRAINT "pdpd_tps_chart_tps_calon_id_unique" UNIQUE("tps","calon_id");
