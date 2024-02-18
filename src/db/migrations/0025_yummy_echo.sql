@@ -1,0 +1,1 @@
+ALTER TABLE "wilayah" ADD CONSTRAINT "wilayah_kode_unique" UNIQUE("kode");
