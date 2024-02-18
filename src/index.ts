@@ -4,6 +4,7 @@ import { getWilayah } from "@/actions/get-wilayah";
 import { Command } from "commander";
 import { z } from "zod";
 import { partaiAction } from "@/actions/partai";
+import { dpdActions } from "@/actions/dpd";
 
 const program = new Command();
 
@@ -98,6 +99,31 @@ dpr
   .description("Update Dapil Calon Detail")
   .action(async () => {
     await dprActions.updateDapilCalonDetail();
+  });
+
+// ----------------- DPD -----------------
+
+const dpd = program.command("dpd").description("DPD");
+
+dpd
+  .command("init-tps-list")
+  .description("Init TPS List")
+  .action(async () => {
+    await dpdActions.initTpsList();
+  });
+
+dpd
+  .command("get-calon-list")
+  .description("Get Calon List")
+  .action(async () => {
+    await dpdActions.getCalonList();
+  });
+
+dpd
+  .command("get-tps-detail")
+  .description("Get TPS Detail")
+  .action(async () => {
+    await dpdActions.getTpsDetail();
   });
 
 program.parse();
