@@ -17,6 +17,7 @@ export const strictFetch = async <T>(
   const parsed = schema.safeParse(data);
 
   if (!parsed.success) {
+    console.log(`Parsing error for ${url}`, parsed.error);
     logger.error(`Parsing error for ${url}`, parsed.error);
     throw new Error(`Parsing error for ${url}`, parsed.error);
   }
