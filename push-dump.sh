@@ -1,36 +1,34 @@
 #!/bin/bash
 
-add_commit_push() {
-    local message="$1"
-    git add .
-    git commit -m "$message"
-    git push origin HEAD:main
-}
+# Set the directory containing the files to commit
+folder="dump"
 
-main() {
-    cd /dump/ || exit 1  # Change directory to /dump/ or exit if unsuccessful
-    
-    local total_files=$(git status --porcelain | wc -l)
-    local chunk_size=10000
-    local start_index=0
-    
-    # Generate timestamp for the first loop
-    local timestamp=$(date +"%d %B %Y %H:%M")
-    
-    while [ $start_index -lt $total_files ]; do
-        local end_index=$((start_index + chunk_size))
-        if [ $end_index -gt $total_files ]; then
-            end_index=$total_files
+# Get the current date and time for the commit message
+commit_date=$(date +"%d %B %Y %H:%M")
+
+# Counter for batch number
+batch_number=1
+
+# Initialize git repository if not already
+git init
+
+# Loop through the files in batches of 1000
+for file in "$folder"/*; do
+    if [[ -f $file ]]; then
+        git add "$file"
+        if (( batch_number % 1000 == 0 )); then
+            # Commit every 1000 files
+            commit_message="$commit_date - Batch $((batch_number / 1000))"
+            git commit -m "$commit_message"
+            git push origin HEAD:main
         fi
-        
-        local message="$timestamp - Batch $((start_index / chunk_size + 1))"
-        
-        git status --porcelain | head -n $end_index | tail -n $chunk_size | cut -c4- | xargs git add
-        
-        add_commit_push "$message"
-        
-        start_index=$end_index
-    done
-}
+        ((batch_number++))
+    fi
+done
 
-main
+# Commit any remaining files
+if (( (batch_number - 1) % 1000 != 0 )); then
+    commit_message="$commit_date - Batch $((batch_number / 1000))"
+    git commit -m "$commit_message"
+     git push origin HEAD:main
+fi
