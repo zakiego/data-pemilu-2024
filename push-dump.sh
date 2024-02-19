@@ -8,6 +8,8 @@ add_commit_push() {
 }
 
 main() {
+    cd /dump/ || exit 1  # Change directory to /dump/ or exit if unsuccessful
+    
     local total_files=$(git status --porcelain | wc -l)
     local chunk_size=10000
     local start_index=0
