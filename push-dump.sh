@@ -1,34 +1,29 @@
 #!/bin/bash
 
-# Step 1: Open dump folder
-cd dump/
+# Tentuin jumlah file per commit
+files_per_commit=100
 
-# Step 2: Get all modified files from git status
-modified_files=$(git status --porcelain | grep '^ M' | cut -c4-)
+# Ambil list modified files
+modified_files=$(git status --porcelain | grep '^ M' | cut -d ' ' -f 3)
 
-# Step 3: Chunk with 10 files into array
-chunk_size=10
-file_count=$(echo "$modified_files" | wc -l)
-group_count=$((file_count / chunk_size))
+# Hitung jumlah modified files
+total_files=$(echo "$modified_files" | wc -l)
 
-if [ $((file_count % chunk_size)) -ne 0 ]; then
-    ((group_count++))
+# Hitung jumlah commit yang dibutuhkan
+total_commits=$((total_files / files_per_commit))
+if [ $((total_files % files_per_commit)) -ne 0 ]; then
+    total_commits=$((total_commits + 1))
 fi
 
-group_index=0
-for (( i=0; i<$file_count; i+=chunk_size )); do
-    ((group_index++))
-    start_index=$i
-    end_index=$((start_index + chunk_size - 1))
-
-    if [ $end_index -gt $((file_count - 1)) ]; then
-        end_index=$((file_count - 1))
+# Loop untuk commit dan push setiap 100 file
+for ((i = 0; i < total_commits; i++)); do
+    start_index=$((i * files_per_commit))
+    end_index=$((start_index + files_per_commit - 1))
+    if [ $end_index -ge $total_files ]; then
+        end_index=$((total_files - 1))
     fi
-
-    files_in_group=$(echo "$modified_files" | sed -n "$((start_index + 1)),$((end_index + 1))p")
-
-    # Step 4: Git add and commit push every group in each array
-    git add $files_in_group
-    git commit -m "Auto-commit: Group $group_index"
-    git push origin HEAD:main
+    commit_files=$(echo "$modified_files" | sed -n "$((start_index + 1)),$((end_index + 1))p")
+    git add $commit_files
+    git commit -m "Commit $((i + 1)) dari $total_commits"
+    git push
 done
