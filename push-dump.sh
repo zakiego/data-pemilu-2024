@@ -9,6 +9,13 @@ commit_date=$(date +"%d %B %Y %H:%M")
 # Counter for batch number
 batch_number=1
 
+# Function to check if there are untracked files
+check_untracked_files() {
+    if [[ $(git status --porcelain) ]]; then
+        git add .
+    fi
+}
+
 # Loop through the files in batches of 1000
 for file in *; do
     if [[ -f $file ]]; then
@@ -18,6 +25,7 @@ for file in *; do
             commit_message="$commit_date - Batch $((batch_number / 1000))"
             git commit -m "$commit_message"
             git push origin HEAD:main
+            check_untracked_files
         fi
         ((batch_number++))
     fi
@@ -28,4 +36,5 @@ if (( (batch_number - 1) % 1000 != 0 )); then
     commit_message="$commit_date - Batch $((batch_number / 1000))"
     git commit -m "$commit_message"
     git push origin HEAD:main
+    check_untracked_files
 fi
