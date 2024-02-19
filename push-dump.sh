@@ -16,10 +16,10 @@ echo "Number of groups: $group_count"
 for ((i = 0; i < $group_count; i++)); do
     start=$((i * chunk_size))
     end=$((start + chunk_size - 1))
-    files=$(ls | sed -n "$((start + 1)),$((end + 1))p" | tr '\n' ' ')
+    files=($(ls | sed -n "$((start + 1)),$((end + 1))p"))
     
     # Add files to git
-    git add $files
+    git add "${files[@]}"
     
     # Commit changes
     git commit -m "Added files from group $((i + 1))"
