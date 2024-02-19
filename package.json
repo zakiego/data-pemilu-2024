@@ -12,7 +12,7 @@
     "db:rollback": "drizzle-kit drop",
     "db:check": "drizzle-kit check:pg",
     "db:studio": "drizzle-kit studio",
-    "push-dump": "cd dump && git add . && git commit -m 'update' && git push -u origin main"
+    "push-dump": "cd dump && git add . && git commit -m 'update' && git push origin HEAD:main"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
