@@ -27,5 +27,6 @@ for ((i = 0; i < total_commits; i++)); do
     commit_files=$(echo "$modified_files" | sed -n "$((start_index + 1)),$((end_index + 1))p")
     git add $commit_files
     git commit -m "Commit $((i + 1)) dari $total_commits"
-    git push origin HEAD:main
 done
+
+git push origin HEAD:main
