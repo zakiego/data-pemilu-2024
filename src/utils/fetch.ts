@@ -22,7 +22,7 @@ export const strictFetch = async <T>(
     throw new Error(`Parsing error for ${url}`, parsed.error);
   }
 
-  saveFile({ data, url });
+  await saveFile({ data, url });
 
   return parsed.data;
 };
@@ -41,7 +41,7 @@ const saveFile = async ({ data, url }: SaveFile) => {
 
   const fileName = url.replace("https://sirekap-obj-data.kpu.go.id", "");
 
-  Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
+  await Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
     createPath: true,
   });
 };
