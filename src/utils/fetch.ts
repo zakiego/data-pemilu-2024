@@ -22,5 +22,26 @@ export const strictFetch = async <T>(
     throw new Error(`Parsing error for ${url}`, parsed.error);
   }
 
+  saveFile({ data, url });
+
   return parsed.data;
+};
+
+type SaveFile = {
+  data: unknown;
+  url: string;
+};
+
+const saveFile = async ({ data, url }: SaveFile) => {
+  const isValidUrl = url.startsWith("https://sirekap-obj-data.kpu.go.id");
+
+  if (!isValidUrl) {
+    throw new Error("Invalid url");
+  }
+
+  const fileName = url.replace("https://sirekap-obj-data.kpu.go.id", "");
+
+  Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
+    createPath: true,
+  });
 };
