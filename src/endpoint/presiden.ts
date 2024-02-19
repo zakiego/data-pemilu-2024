@@ -85,7 +85,7 @@ export const presiden = {
           pengguna_non_dpt_p: z.number().nullable(),
         })
         .nullable(),
-      psu: z.enum(["Pemungutan Suara Ulang"]),
+      psu: z.enum(["Pemungutan Suara Ulang"]).nullable(),
       ts: z.string(),
       status_suara: z.boolean(),
       status_adm: z.boolean(),
