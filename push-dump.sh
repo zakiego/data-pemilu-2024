@@ -3,7 +3,7 @@
 cd dump/
 
 # Tentuin jumlah file per commit
-files_per_commit=100
+files_per_commit=5
 
 # Ambil list modified files
 modified_files=$(git status --porcelain | grep '^ M' | cut -d ' ' -f 3)
