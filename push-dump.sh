@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Step 1: Open dump folder
-cd dump
+cd dump/
 
 # Step 2: Get all modified files from git status
 modified_files=$(git status --porcelain | grep '^ M' | cut -c4-)
