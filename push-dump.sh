@@ -18,6 +18,9 @@ for ((i = 0; i < $group_count; i++)); do
     end=$((start + chunk_size - 1))
     files=($(ls | sed -n "$((start + 1)),$((end + 1))p"))
     
+    # Change directory to dump
+    cd dump
+    
     # Add files to git
     git add "${files[@]}"
     
@@ -26,4 +29,7 @@ for ((i = 0; i < $group_count; i++)); do
     
     # Push changes to origin
     git push origin HEAD:main
+    
+    # Move back to parent directory
+    cd ..
 done
