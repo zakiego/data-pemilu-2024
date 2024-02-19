@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd dump/
+
 # Tentuin jumlah file per commit
 files_per_commit=100
 
