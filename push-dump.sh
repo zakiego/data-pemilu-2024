@@ -1,40 +1,29 @@
 #!/bin/bash
 
-# Change directory to the "dump" folder
-cd dump || exit
+# Step 1: Open `dump` folder
+cd dump || { echo "Error: dump folder not found"; exit 1; }
 
-# Get the current date and time for the commit message
-commit_date=$(date +"%d %B %Y %H:%M")
+# Step 2: Scan files number
+file_count=$(ls -1 | wc -l)
+echo "Total number of files: $file_count"
 
-# Counter for batch number
-batch_number=1
+# Step 3: Chunk group to every 100 size
+chunk_size=100
+group_count=$(( ($file_count + $chunk_size - 1) / $chunk_size )) # Round up division
+echo "Number of groups: $group_count"
 
-# Function to check if there are untracked files
-check_untracked_files() {
-    if [[ $(git status --porcelain) ]]; then
-        git add .
-    fi
-}
-
-# Loop through the files in batches of 1000
-for file in *; do
-    if [[ -f $file ]]; then
-        git add "$file"
-        if (( batch_number % 1000 == 0 )); then
-            # Commit every 1000 files
-            commit_message="$commit_date - Batch $((batch_number / 1000))"
-            git commit -m "$commit_message"
-            git push origin HEAD:main
-            check_untracked_files
-        fi
-        ((batch_number++))
-    fi
-done
-
-# Commit any remaining files
-if (( (batch_number - 1) % 1000 != 0 )); then
-    commit_message="$commit_date - Batch $((batch_number / 1000))"
-    git commit -m "$commit_message"
+# Step 4: Loop group, to git add "this all files every group", git commit, git push origin HEAD:main
+for ((i = 0; i < $group_count; i++)); do
+    start=$((i * chunk_size))
+    end=$((start + chunk_size - 1))
+    files=$(ls | sed -n "$((start + 1)),$((end + 1))p" | tr '\n' ' ')
+    
+    # Add files to git
+    git add $files
+    
+    # Commit changes
+    git commit -m "Added files from group $((i + 1))"
+    
+    # Push changes to origin
     git push origin HEAD:main
-    check_untracked_files
-fi
+done
