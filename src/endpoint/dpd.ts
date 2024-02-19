@@ -72,7 +72,7 @@ export const dpd = {
             pengguna_non_dpt_p: z.number().nullable(),
           })
           .nullable(),
-        psu: z.null(),
+        psu: z.enum(["Pemungutan Suara Ulang"]),
         ts: z.string(),
         status_suara: z.boolean(),
         status_adm: z.boolean(),
