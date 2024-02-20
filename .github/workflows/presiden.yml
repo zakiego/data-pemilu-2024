@@ -20,6 +20,11 @@ jobs:
         run: bun install
       # - name: Run
       # run: bun start dpd get-tps-detail -c 5 -l 200
+      - name: Git Submodule Update
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
+
       - name: Push Dump Files
         env:
           CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
@@ -27,6 +32,7 @@ jobs:
         run: |
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --global user.email "username@users.noreply.github.com"
+
           # ./push-dump.sh
           git status
           ls
