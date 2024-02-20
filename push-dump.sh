@@ -1,7 +1,7 @@
 #!/bin/bash
 cd dump/
 
-files_per_commit=100
+files_per_commit=10
 
 modified_files=$(git status --porcelain | awk '{$1 = ""; print substr($0, 2)}')
 total_modified_files=$(echo "$modified_files" | wc -l)

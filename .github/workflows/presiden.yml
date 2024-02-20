@@ -8,6 +8,7 @@ env:
 jobs:
   run:
     runs-on: self-hosted
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v1
@@ -16,4 +17,12 @@ jobs:
       - name: Install
         run: bun install
       - name: Run
-        run: bun start dpd get-tps-detail -c 5 -l 100
+        run: bun start dpd get-tps-detail -c 5 -l 200
+      - name: Push Dump Files
+        env:
+          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+          CI_COMMIT_AUTHOR: Continuous Integration
+        run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "username@users.noreply.github.com"
+          ./push-dump.sh
