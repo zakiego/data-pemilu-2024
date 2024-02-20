@@ -10,5 +10,7 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
+      - name: Install
+        run: bun install
       - name: Run
         run: bun start dpd get-tps-detail -c 5 -l 100
