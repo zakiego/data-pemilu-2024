@@ -20,7 +20,7 @@ jobs:
       - name: Install
         run: bun install
       - name: Run
-        run: bun start dpd get-tps-detail -c 5 -l 200
+        run: bun start dpd get-tps-detail -c 5 -l 20
       - name: Update Submodule
         run: |
           git submodule init
@@ -37,7 +37,7 @@ jobs:
           git commit -m "Update submodule"
 
           # Push changes to the submodule's repository
-          git push
+          git push origin HEAD:main
 
       # - name: Git Submodule Update
       #   run: |
