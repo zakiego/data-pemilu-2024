@@ -18,8 +18,8 @@ jobs:
           bun-version: latest
       - name: Install
         run: bun install
-      # - name: Run
-      # run: bun start dpd get-tps-detail -c 5 -l 200
+      - name: Run
+        run: bun start dpd get-tps-detail -c 5 -l 200
       - name: Git Submodule Update
         run: |
           git pull --recurse-submodules
@@ -28,16 +28,16 @@ jobs:
       - name: Push Dump Files
         env:
           CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-          CI_COMMIT_AUTHOR: Continuous Integration
+          CI_COMMIT_AUTHOR: github-actions[bot]
+          CI_COMMIT_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "username@users.noreply.github.com"
-
-          # ./push-dump.sh
-          git status
-          ls
-          ls dump/
-          cd dump/
-          ls
-          git status
-          ls pemilu/hhcw/pdpd/
+          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
+          ./push-dump.sh
+          # git status
+          # ls
+          # ls dump/
+          # cd dump/
+          # ls
+          # git status
+          # ls pemilu/hhcw/pdpd/
