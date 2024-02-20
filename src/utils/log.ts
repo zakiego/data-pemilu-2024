@@ -6,7 +6,7 @@ const transport = pino.transport({
       level: "trace",
       target: "pino/file",
       options: {
-        destination: "./logs/file.log",
+        destination: "./file.log",
       },
     },
     {
