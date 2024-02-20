@@ -28,5 +28,7 @@ jobs:
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --global user.email "username@users.noreply.github.com"
           # ./push-dump.sh
-          ls
-          ls dump/
+          # ls
+          # ls dump/
+          cd dump/
+          git status
