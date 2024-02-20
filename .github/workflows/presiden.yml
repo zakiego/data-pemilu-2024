@@ -43,6 +43,8 @@ jobs:
         with:
           branch: ${{ github.head_ref }}
           github_token: ${{ secrets.ACCESS_TOKEN }}
+          directory: dump
+          repository: zakiego/pantau-pemilu-2024-dump
 
           # git config --unset-all http.https://github.com/.extraheader
           # git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
