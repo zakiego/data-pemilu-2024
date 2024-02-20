@@ -45,6 +45,7 @@ const saveFile = async ({ data, url }: SaveFile) => {
     await Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
       createPath: true,
     });
+    console.log(`Saved file ${fileName}`);
   } catch (error) {
     console.log(`Failed to save file ${fileName}`, error);
   }
