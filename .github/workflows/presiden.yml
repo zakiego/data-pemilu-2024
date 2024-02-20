@@ -32,10 +32,22 @@ jobs:
           CI_COMMIT_AUTHOR: github-actions[bot]
           CI_COMMIT_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
+
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.head_ref }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+
           # git config --unset-all http.https://github.com/.extraheader
           # git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           # git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
-          ./push-dump.sh
+          # ./push-dump.sh
           # git status
           # ls
           # ls dump/
