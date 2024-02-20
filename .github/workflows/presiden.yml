@@ -21,39 +21,57 @@ jobs:
         run: bun install
       - name: Run
         run: bun start dpd get-tps-detail -c 5 -l 200
-      - name: Git Submodule Update
+      - name: Update Submodule
         run: |
-          git pull --recurse-submodules
-          git submodule update --remote --recursive
-
-      - name: Push Dump Files
-        env:
-          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-          CI_COMMIT_AUTHOR: github-actions[bot]
-          CI_COMMIT_EMAIL: github-actions[bot]@users.noreply.github.com
+          git submodule init
+          git submodule update --remote
+      - name: Make Changes and Push
         run: |
+          # Navigate to the submodule directory
+          cd dump
 
-      - name: Commit files
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -a -m "Add changes"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: ${{ github.head_ref }}
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          directory: dump
-          repository: zakiego/pantau-pemilu-2024-dump
+          # Make your changes (e.g., modify files)
 
-          # git config --unset-all http.https://github.com/.extraheader
-          # git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          # git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
-          # ./push-dump.sh
-          # git status
-          # ls
-          # ls dump/
-          # cd dump/
-          # ls
-          # git status
-          # ls pemilu/hhcw/pdpd/
+          # Add and commit changes
+          git add .
+          git commit -m "Update submodule"
+
+          # Push changes to the submodule's repository
+          git push
+
+      # - name: Git Submodule Update
+      #   run: |
+      #     git pull --recurse-submodules
+      #     git submodule update --remote --recursive
+
+      # - name: Push Dump Files
+      #   env:
+      #     CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+      #     CI_COMMIT_AUTHOR: github-actions[bot]
+      #     CI_COMMIT_EMAIL: github-actions[bot]@users.noreply.github.com
+      #   run: |
+
+      # - name: Commit files
+      #   run: |
+      #     git config --local user.email "github-actions[bot]@users.noreply.github.com"
+      #     git config --local user.name "github-actions[bot]"
+      #     git commit -a -m "Add changes"
+      # - name: Push changes
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     branch: ${{ github.head_ref }}
+      #     github_token: ${{ secrets.ACCESS_TOKEN }}
+      #     directory: dump
+      #     repository: zakiego/pantau-pemilu-2024-dump
+
+      # git config --unset-all http.https://github.com/.extraheader
+      # git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+      # git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
+      # ./push-dump.sh
+      # git status
+      # ls
+      # ls dump/
+      # cd dump/
+      # ls
+      # git status
+      # ls pemilu/hhcw/pdpd/
