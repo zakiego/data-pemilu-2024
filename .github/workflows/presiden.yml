@@ -1,0 +1,14 @@
+name: Pull Data Presiden dan Wakil Presiden
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Run
+        run: bs dpd get-tps-detail -c 5 -l 100
