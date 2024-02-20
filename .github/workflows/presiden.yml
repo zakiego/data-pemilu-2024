@@ -11,8 +11,8 @@ jobs:
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
-        # with:
-        #   submodules: true
+        with:
+          submodules: true
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
