@@ -24,20 +24,7 @@ if (env.NODE_ENV === "production") {
   db = drizzle(postgres(env.DATABASE_URL), { schema: dbSchema });
 } else {
   if (!global.db)
-    global.db = drizzle(
-      postgres(env.DATABASE_URL, {
-        onnotice(notice) {
-          console.log(`Notice: ${notice}`);
-        },
-        onclose(connId) {
-          console.log(`Connection ${connId} closed`);
-        },
-        max: 25,
-        idle_timeout: 1000,
-        connect_timeout: 1000,
-      }),
-      { schema: dbSchema },
-    );
+    global.db = drizzle(postgres(env.DATABASE_URL), { schema: dbSchema });
 
   db = global.db;
 }
