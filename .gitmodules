@@ -1,0 +1,3 @@
+[submodule "dump"]
+	path = dump
+	url = https://github.com/zakiego/pantau-pemilu-2024-dump
