@@ -18,8 +18,8 @@ jobs:
           bun-version: latest
       - name: Install
         run: bun install
-      - name: Run
-        run: bun start dpd get-tps-detail -c 5 -l 200
+      # - name: Run
+      # run: bun start dpd get-tps-detail -c 5 -l 200
       - name: Push Dump Files
         env:
           CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
