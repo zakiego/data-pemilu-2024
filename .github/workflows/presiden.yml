@@ -31,6 +31,7 @@ jobs:
           CI_COMMIT_AUTHOR: github-actions[bot]
           CI_COMMIT_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
+          git config --unset-all http.https://github.com/.extraheader
           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
           git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
           ./push-dump.sh
