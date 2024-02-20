@@ -11,4 +11,4 @@ jobs:
         with:
           bun-version: latest
       - name: Run
-        run: bs dpd get-tps-detail -c 5 -l 100
+        run: bun start dpd get-tps-detail -c 5 -l 100
