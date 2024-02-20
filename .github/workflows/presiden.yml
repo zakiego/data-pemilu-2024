@@ -2,6 +2,9 @@ name: Pull Data Presiden dan Wakil Presiden
 
 on: [push]
 
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
 jobs:
   run:
     runs-on: self-hosted
