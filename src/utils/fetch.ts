@@ -41,7 +41,11 @@ const saveFile = async ({ data, url }: SaveFile) => {
 
   const fileName = url.replace("https://sirekap-obj-data.kpu.go.id", "");
 
-  await Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
-    createPath: true,
-  });
+  try {
+    await Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
+      createPath: true,
+    });
+  } catch (error) {
+    console.log(`Failed to save file ${fileName}`, error);
+  }
 };
