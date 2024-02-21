@@ -3,6 +3,7 @@ import { ENDPOINT_FUNCTION } from "@/endpoint";
 import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
+import { initCli } from "@/utils/progress";
 import { nullGuard } from "@/utils/type";
 import { eq, inArray, sql, count, asc } from "drizzle-orm";
 
@@ -110,6 +111,10 @@ const getTpsDetail = async () => {
   logger.info(`Successfully queried data for TPS: ${listTPS.length} rows`);
 
   const concurrent = createConcurrentManager();
+
+  const cli = initCli({
+    total: count,
+  });
 
   for (let i = 0; i < listTPS.length; i++) {
     concurrent.queue(async () => {
@@ -227,6 +232,8 @@ const getTpsDetail = async () => {
             console.log("Error on update TPS List", e);
             throw e;
           });
+
+        cli.increment();
       });
 
       logger.info(

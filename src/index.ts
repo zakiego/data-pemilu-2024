@@ -13,6 +13,7 @@ program
   .option("-c, --concurrent <number>", "Concurrent", "5")
   .option("-l, --limit <number>", "Set limit")
   .option("--no-dump", "Don't save file")
+  .option("-d, --debug", "Debug mode")
   .parse();
 
 export const options = z
@@ -20,6 +21,7 @@ export const options = z
     concurrent: z.coerce.number(),
     limit: z.coerce.number().optional(),
     dump: z.boolean(),
+    debug: z.boolean().optional(),
   })
   .parse(program.opts());
 

@@ -1,3 +1,4 @@
+import { options } from "@/index";
 import pino, { destination } from "pino";
 
 const transport = pino.transport({
@@ -10,7 +11,7 @@ const transport = pino.transport({
       },
     },
     {
-      level: "trace",
+      level: "error",
       target: "pino-pretty",
       options: {},
     },
