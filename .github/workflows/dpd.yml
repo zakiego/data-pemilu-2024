@@ -29,5 +29,5 @@ jobs:
 
       - name: Install
         run: bun install
-      - name: Run 1
-        run: bun start dpd get-tps-detail -l 100000 --no-dump
+      - name: Run
+        run: bun start dpd get-tps-detail --no-dump
