@@ -2,13 +2,9 @@ import { dbSchema } from "@/db/schema";
 import { env } from "@/utils/env";
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { drizzle as drizzleNodePostgres } from "drizzle-orm/node-postgres";
 
 export const migrationClient = drizzle(postgres(env.DATABASE_URL, { max: 1 }));
-
-// const queryClient = postgres(env.DATABASE_URL, { max: 25 });
-// export const dbClient = drizzle(queryClient, {
-//   schema: dbSchema,
-// });
 
 export { dbSchema };
 
@@ -24,9 +20,28 @@ if (env.NODE_ENV === "production") {
   db = drizzle(postgres(env.DATABASE_URL), { schema: dbSchema });
 } else {
   if (!global.db)
-    global.db = drizzle(postgres(env.DATABASE_URL), { schema: dbSchema });
+    global.db = drizzle(
+      postgres(env.DATABASE_URL, {
+        // debug(connection, query, parameters, paramTypes) {
+        //   console.log("QUERY:", query, parameters, paramTypes);
+        // },
+      }),
+      { schema: dbSchema },
+    );
 
   db = global.db;
 }
 
 export const dbClient = db;
+
+// import { Client, Pool } from "pg";
+// const pool = new Pool({
+//   connectionString: env.DATABASE_URL,
+//   log(...messages) {
+//     console.log("DATABASE LOG:", ...messages);
+//   },
+// });
+
+// export const dbClient = drizzleNodePostgres(pool, {
+//   schema: dbSchema,
+// });

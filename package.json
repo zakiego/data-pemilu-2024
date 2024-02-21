@@ -18,7 +18,8 @@
     "@biomejs/biome": "^1.5.3",
     "@types/bun": "latest",
     "@types/lodash": "^4.14.202",
-    "drizzle-kit": "^0.20.13"
+    "@types/pg": "^8.11.0",
+    "drizzle-kit": "^0.20.14"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -27,6 +28,7 @@
     "concurrent-manager": "^1.1.0",
     "drizzle-orm": "^0.29.3",
     "lodash": "^4.17.21",
+    "pg": "^8.11.3",
     "pino": "^8.17.2",
     "pino-pretty": "^10.3.1",
     "postgres": "^3.4.3",
