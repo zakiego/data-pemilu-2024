@@ -97,8 +97,6 @@ const getCalonList = async () => {
 };
 
 const getTpsDetail = async () => {
-  console.log("getTpsDetail");
-
   const listTPS = await QUERY_TPS.findMany({
     columns: {
       kode: true,
@@ -106,8 +104,6 @@ const getTpsDetail = async () => {
     limit: options.limit,
     orderBy: asc(SCHEMA_TPS_LIST.updated_at),
   });
-
-  console.log("Done querying TPS list");
 
   const count = listTPS.length;
 
