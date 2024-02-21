@@ -54,7 +54,9 @@ export const dpr = {
         caleg: z
           .record(z.string(), z.record(z.string(), z.number().nullable()))
           .nullish(),
-        psu: z.enum(["Pemungutan Suara Ulang"]).nullable(),
+        psu: z
+          .enum(["Pemungutan Suara Ulang", "Penghitungan Suara Ulang"])
+          .nullable(),
         ts: z.string(),
         status_suara: z.boolean(),
         status_adm: z.boolean(),
