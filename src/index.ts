@@ -12,12 +12,14 @@ const program = new Command();
 program
   .option("-c, --concurrent <number>", "Concurrent", "5")
   .option("-l, --limit <number>", "Set limit")
+  .option("--no-dump", "Don't save file")
   .parse();
 
 export const options = z
   .object({
     concurrent: z.coerce.number(),
     limit: z.coerce.number().optional(),
+    dump: z.boolean(),
   })
   .parse(program.opts());
 

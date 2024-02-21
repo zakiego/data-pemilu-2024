@@ -1,3 +1,4 @@
+import { options } from "@/index";
 import { logger } from "@/utils/log";
 import type { z } from "zod";
 
@@ -42,10 +43,12 @@ const saveFile = async ({ data, url }: SaveFile) => {
   const fileName = url.replace("https://sirekap-obj-data.kpu.go.id", "");
 
   try {
-    await Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
-      createPath: true,
-    });
-    console.log(`Saved file ${fileName}`);
+    if (options.dump === true) {
+      await Bun.write(`dump/${fileName}`, JSON.stringify(data, null, 2), {
+        createPath: true,
+      });
+      console.log(`Saved file ${fileName}`);
+    }
   } catch (error) {
     console.log(`Failed to save file ${fileName}`, error);
   }
