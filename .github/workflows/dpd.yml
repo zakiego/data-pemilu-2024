@@ -1,6 +1,9 @@
 name: Pull Data DPD
 
 on:
+  # push:
+  #   branches:
+  #     - main
   schedule:
     - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 
@@ -14,7 +17,7 @@ permissions:
 jobs:
   run:
     runs-on: self-hosted
-    timeout-minutes: 180
+    timeout-minutes: 300 # 5 hours
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,23 +30,23 @@ jobs:
       - name: Install
         run: bun install
       - name: Run 1
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 2
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 3
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 4
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 5
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 6
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 7
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 8
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd get-tps-detail -l 100000 --no-dump
       - name: Run 9
-        run: bun start dpd get-tps-detail -c 10 -l 80000
+        run: bun start dpd get-tps-detail -l 80000 --no-dump
       # - name: Update Submodule
       #   run: |
       #     git submodule init

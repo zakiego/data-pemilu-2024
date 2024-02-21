@@ -1,6 +1,9 @@
 name: Pull Data Presiden dan Wakil Presiden
 
 on:
+  # push:
+  #   branches:
+  #     - main
   schedule:
     - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 
@@ -14,7 +17,7 @@ permissions:
 jobs:
   run:
     runs-on: self-hosted
-    timeout-minutes: 180
+    timeout-minutes: 300 # 5 hours
     steps:
       - uses: actions/checkout@v4
         with:
