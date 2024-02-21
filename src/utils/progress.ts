@@ -7,6 +7,7 @@ export const initCli = ({ total }: { total: number }) => {
       stopOnComplete: true,
       stream: process.stdout,
       noTTYOutput: true,
+      notTTYSchedule: 10_000, // 10 seconds
     },
     cliProgress.Presets.shades_classic,
   );
