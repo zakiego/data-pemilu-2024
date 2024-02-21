@@ -1,8 +1,9 @@
-name: Pull Data DPD
+name: Pull Data Presiden dan Wakil Presiden
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
+  push
+  # schedule:
+  #   - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -27,23 +28,23 @@ jobs:
       - name: Install
         run: bun install
       - name: Run 1
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 2
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 3
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 4
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 5
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 6
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 7
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 8
-        run: bun start dpd get-tps-detail -c 10 -l 100000
+        run: bun start dpd update-tps-detail -c 100 -l 100000
       - name: Run 9
-        run: bun start dpd get-tps-detail -c 10 -l 80000
+        run: bun start dpd update-tps-detail -c 100 -l 80000
       # - name: Update Submodule
       #   run: |
       #     git submodule init
