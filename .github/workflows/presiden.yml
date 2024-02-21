@@ -1,9 +1,8 @@
 name: Pull Data Presiden dan Wakil Presiden
 
 on:
-  push
-  # schedule:
-  #   - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
+  schedule:
+    - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
