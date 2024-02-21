@@ -1,9 +1,9 @@
 name: Pull Data DPD
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
   schedule:
     - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 
