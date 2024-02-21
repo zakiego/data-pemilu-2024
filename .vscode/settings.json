@@ -1,0 +1,5 @@
+{
+  "git.detectSubmodules": false,
+  "git.ignoredRepositories": ["/dump"],
+  "git.detectSubmodulesLimit": 0
+}
