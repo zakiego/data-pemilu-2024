@@ -28,23 +28,23 @@ jobs:
       - name: Install
         run: bun install
       - name: Run 1
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 2
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 3
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 4
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 5
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 6
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 7
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 8
-        run: bun start presiden update-tps-detail -c 100 -l 100000
+        run: bun start pilpres update-tps-detail -c 100 -l 100000
       - name: Run 9
-        run: bun start presiden update-tps-detail -c 100 -l 80000
+        run: bun start pilpres update-tps-detail -c 100 -l 80000
       # - name: Update Submodule
       #   run: |
       #     git submodule init
