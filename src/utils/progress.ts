@@ -6,6 +6,7 @@ export const initCli = ({ total }: { total: number }) => {
     {
       stopOnComplete: true,
       stream: process.stdout,
+      noTTYOutput: true,
     },
     cliProgress.Presets.shades_classic,
   );
