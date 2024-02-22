@@ -705,6 +705,10 @@ const updateTpsDetail = async () => {
 
   const concurrent = createConcurrentManager();
 
+  const cli = initCli({
+    total: count,
+  });
+
   for (let i = 0; i < listTps.length; i++) {
     concurrent.queue(async () => {
       const tps = listTps[i];
@@ -801,6 +805,8 @@ const updateTpsDetail = async () => {
       logger.info(
         `${i + 1}/${count} - Successfully updated data for TPS: ${tps.kode}`,
       );
+
+      cli.increment();
     });
   }
 
