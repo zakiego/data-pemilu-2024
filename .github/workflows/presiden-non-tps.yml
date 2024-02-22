@@ -1,0 +1,36 @@
+name: Pull Data Presiden dan Wakil Presiden Non TPS
+
+on:
+  schedule:
+    - cron: "0 * * * *" # every hour
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+jobs:
+  run:
+    runs-on: self-hosted
+    timeout-minutes: 300 # 5 hours
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install
+        run: bun install
+
+      - name: Presiden - Hitung Suara - Nasional & Provinsi
+        run: bun start presiden get-suara-by-provinsi
+
+      - name: Presiden - Hitung Suara - Kabupaten & Kota
+        run: bun start presiden get-suara-by-kabupaten-kota -c 10
+
+      - name: Presiden - Hitung Suara - Kecamatan
+        run: bun start presiden get-suara-by-kecamatan -c 30
+
+      - name: Presiden - Hitung Suara - Kelurahan
+        run: bun start presiden get-suara-by-kelurahan -c 50
