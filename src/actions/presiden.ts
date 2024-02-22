@@ -3,6 +3,7 @@ import { ENDPOINT_FUNCTION } from "@/endpoint";
 import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
+import { initCli } from "@/utils/progress";
 import { nullGuard } from "@/utils/type";
 import { eq, inArray, sql } from "drizzle-orm";
 
@@ -10,6 +11,482 @@ const QUERY = dbClient.query.ppwpTps;
 const TPS_SCHEMA = dbSchema.ppwpTps;
 const FETCH_TPS = ENDPOINT_FUNCTION.presiden.get_detail_tps;
 const COLUMN_IS_FETCHED = dbSchema.wilayah.is_fetched_presiden;
+
+const getSuaraProvinsi = async () => {
+  const response = await ENDPOINT_FUNCTION.presiden.get_suara_by_provinsi();
+  const provinsi = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 1),
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const cli = initCli({
+    total: 2,
+  });
+
+  // -- Insert data to ppwp_nasional
+  await dbClient
+    .insert(dbSchema.ppwpNasional)
+    .values({
+      kode: "0",
+      suara_paslon_1: response.data.chart["100025"],
+      suara_paslon_2: response.data.chart["100026"],
+      suara_paslon_3: response.data.chart["100027"],
+      persen_suara_masuk: response.data.chart.persen,
+      psu: response.data.psu,
+      ts: response.data.ts,
+      url_api: response.apiUrl,
+      url_page: response.pageUrl,
+    })
+    .onConflictDoUpdate({
+      target: [dbSchema.ppwpNasional.kode],
+      set: {
+        suara_paslon_1: sql`EXCLUDED.suara_paslon_1`,
+        suara_paslon_2: sql`EXCLUDED.suara_paslon_2`,
+        suara_paslon_3: sql`EXCLUDED.suara_paslon_3`,
+        persen_suara_masuk: sql`EXCLUDED.persen_suara_masuk`,
+        psu: response.data.psu,
+        ts: response.data.ts,
+
+        url_page: response.pageUrl,
+        url_api: response.apiUrl,
+
+        updated_at: new Date(),
+        fetch_count: sql`${dbSchema.ppwpNasional.fetch_count} + 1`,
+      },
+    })
+    .catch((e) => {
+      logger.error(
+        "Error on insert data: Hitung Suara - Presiden - Nasional",
+        e,
+      );
+      throw e;
+    });
+
+  cli.increment();
+
+  // -- Insert data to ppwp_provinsi
+  await dbClient
+    .insert(dbSchema.ppwpProvinsi)
+    .values(
+      response.data._flat_table.map((x) => {
+        return {
+          kode: x.provinsi,
+          provinsi_kode: x.provinsi,
+          provinsi_nama: provinsi.find((y) => y.kode === x.provinsi)?.nama,
+          suara_paslon_1: x["100025"],
+          suara_paslon_2: x["100026"],
+          suara_paslon_3: x["100027"],
+          status_progress: x.status_progress,
+          psu: response.data.psu,
+          ts: response.data.ts,
+          fetch_count: 1,
+          persen: x.persen,
+        };
+      }),
+    )
+    .onConflictDoUpdate({
+      target: [dbSchema.ppwpProvinsi.kode],
+      set: {
+        suara_paslon_1: sql`EXCLUDED.suara_paslon_1`,
+        suara_paslon_2: sql`EXCLUDED.suara_paslon_2`,
+        suara_paslon_3: sql`EXCLUDED.suara_paslon_3`,
+        persen: sql`EXCLUDED.persen`,
+        status_progress: sql`EXCLUDED.status_progress`,
+        psu: response.data.psu,
+        ts: response.data.ts,
+        updated_at: new Date(),
+        fetch_count: sql`${dbSchema.ppwpProvinsi.fetch_count} + 1`,
+      },
+    })
+    .catch((e) => {
+      logger.error(
+        "Error on insert data: Hitung Suara - Presiden - Provinsi",
+        e,
+      );
+      throw e;
+    });
+
+  cli.increment();
+
+  logger.info("Successfully inserted data: Hitung Suara - Presiden - Provinsi");
+
+  process.exit(0);
+};
+
+const getSuaraKabupatenKota = async () => {
+  const listProvinsi = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 1),
+    limit: options.limit,
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const listKabupatenKota = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 2),
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const concurrent = createConcurrentManager();
+
+  const cli = initCli({
+    total: listProvinsi.length,
+  });
+
+  for (let i = 0; i < listProvinsi.length; i++) {
+    concurrent.queue(async () => {
+      const provinsi = listProvinsi[i];
+
+      const response =
+        await ENDPOINT_FUNCTION.presiden.get_suara_by_kabupaten_kota({
+          provinsi_kode: provinsi.kode,
+        });
+
+      await dbClient
+        .insert(dbSchema.ppwpKabupatenKota)
+        .values(
+          response.data._flat_table.map((x) => {
+            const provinsi_kode = x.kabupaten_kota.substring(0, 2);
+            const provinsi_nama = listProvinsi.find(
+              (y) => y.kode === provinsi_kode,
+            )?.nama;
+            const kabupaten_kota_kode = x.kabupaten_kota;
+            const kabupaten_kota_nama = listKabupatenKota.find(
+              (y) => y.kode === kabupaten_kota_kode,
+            )?.nama;
+
+            return {
+              kode: x.kabupaten_kota,
+              provinsi_kode,
+              provinsi_nama,
+              kabupaten_kota_kode,
+              kabupaten_kota_nama,
+              suara_paslon_1: nullGuard(x["100025"]),
+              suara_paslon_2: nullGuard(x["100026"]),
+              suara_paslon_3: nullGuard(x["100027"]),
+              status_progress: x.status_progress,
+              psu: response.data.psu,
+              ts: response.data.ts,
+
+              url_page: response.pageUrl,
+              url_api: response.apiUrl,
+
+              fetch_count: 1,
+              persen: x.persen,
+            };
+          }),
+        )
+        .onConflictDoUpdate({
+          target: [dbSchema.ppwpKabupatenKota.kode],
+          set: {
+            suara_paslon_1: sql`EXCLUDED.suara_paslon_1`,
+            suara_paslon_2: sql`EXCLUDED.suara_paslon_2`,
+            suara_paslon_3: sql`EXCLUDED.suara_paslon_3`,
+            persen: sql`EXCLUDED.persen`,
+            status_progress: sql`EXCLUDED.status_progress`,
+            psu: response.data.psu,
+            ts: response.data.ts,
+
+            url_page: response.pageUrl,
+            url_api: response.apiUrl,
+            updated_at: new Date(),
+            fetch_count: sql`${dbSchema.ppwpKabupatenKota.fetch_count} + 1`,
+          },
+        })
+        .catch((e) => {
+          console.log(e);
+          logger.error(
+            "Error on insert data: Hitung Suara - Presiden - Kabupaten/Kota",
+            e,
+          );
+          throw e;
+        });
+
+      cli.increment();
+    });
+  }
+
+  await concurrent.run();
+
+  logger.info(
+    "Successfully inserted data: Hitung Suara - Presiden - Kabupaten/Kota",
+  );
+
+  process.exit(0);
+};
+
+const getSuaraKecamatan = async () => {
+  const listProvinsi = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 1),
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const listKabupatenKota = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 2),
+    limit: options.limit,
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const listKecamatan = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 3),
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const concurrent = createConcurrentManager();
+
+  const cli = initCli({
+    total: listKabupatenKota.length,
+  });
+
+  for (let i = 0; i < listKabupatenKota.length; i++) {
+    concurrent.queue(async () => {
+      const kabupatenKota = listKabupatenKota[i];
+
+      const response = await ENDPOINT_FUNCTION.presiden.get_suara_by_kecamatan({
+        kabupaten_kode: kabupatenKota.kode,
+      });
+
+      await dbClient
+        .insert(dbSchema.ppwpKecamatan)
+        .values(
+          response.data._flat_table.map((x) => {
+            const provinsi_kode = x.kecamatan.substring(0, 2);
+            const provinsi_nama = listProvinsi.find(
+              (y) => y.kode === provinsi_kode,
+            )?.nama;
+            const kabupaten_kota_kode = x.kecamatan.substring(0, 4);
+            const kabupaten_kota_nama = listKabupatenKota.find(
+              (y) => y.kode === kabupaten_kota_kode,
+            )?.nama;
+            const kecamatan_kode = x.kecamatan;
+            const kecamatan_nama = listKecamatan.find(
+              (y) => y.kode === kecamatan_kode,
+            )?.nama;
+
+            return {
+              kode: x.kecamatan,
+              provinsi_kode,
+              provinsi_nama,
+              kabupaten_kota_kode,
+              kabupaten_kota_nama,
+              kecamatan_kode,
+              kecamatan_nama,
+              suara_paslon_1: nullGuard(x["100025"]),
+              suara_paslon_2: nullGuard(x["100026"]),
+              suara_paslon_3: nullGuard(x["100027"]),
+              status_progress: x.status_progress,
+              psu: response.data.psu,
+              ts: response.data.ts,
+
+              url_page: response.pageUrl,
+              url_api: response.apiUrl,
+
+              fetch_count: 1,
+              persen: x.persen,
+            };
+          }),
+        )
+        .onConflictDoUpdate({
+          target: [dbSchema.ppwpKecamatan.kode],
+          set: {
+            provinsi_kode: sql`EXCLUDED.provinsi_kode`,
+            provinsi_nama: sql`EXCLUDED.provinsi_nama`,
+            kabupaten_kota_kode: sql`EXCLUDED.kabupaten_kota_kode`,
+            kabupaten_kota_nama: sql`EXCLUDED.kabupaten_kota_nama`,
+            kecamatan_kode: sql`EXCLUDED.kecamatan_kode`,
+            kecamatan_nama: sql`EXCLUDED.kecamatan_nama`,
+            suara_paslon_1: sql`EXCLUDED.suara_paslon_1`,
+            suara_paslon_2: sql`EXCLUDED.suara_paslon_2`,
+            suara_paslon_3: sql`EXCLUDED.suara_paslon_3`,
+            persen: sql`EXCLUDED.persen`,
+            status_progress: sql`EXCLUDED.status_progress`,
+            psu: response.data.psu,
+            ts: response.data.ts,
+
+            url_page: response.pageUrl,
+            url_api: response.apiUrl,
+            updated_at: new Date(),
+            fetch_count: sql`${dbSchema.ppwpKecamatan.fetch_count} + 1`,
+          },
+        })
+        .catch((e) => {
+          console.log(e);
+          logger.error(
+            "Error on insert data: Hitung Suara - Presiden - Kecamatan",
+            e,
+          );
+          throw e;
+        });
+
+      cli.increment();
+    });
+  }
+
+  await concurrent.run();
+
+  logger.info(
+    "Successfully inserted data: Hitung Suara - Presiden - Kecamatan",
+  );
+
+  process.exit(0);
+};
+
+const getSuaraKelurahanDesa = async () => {
+  const listProvinsi = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 1),
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const listKabupatenKota = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 2),
+    limit: options.limit,
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const listKecamatan = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 3),
+    limit: options.limit,
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const listKelurahanDesa = await dbClient.query.wilayah.findMany({
+    where: (table, { eq }) => eq(table.tingkat, 4),
+    columns: {
+      kode: true,
+      nama: true,
+    },
+  });
+
+  const concurrent = createConcurrentManager();
+
+  const cli = initCli({
+    total: listKecamatan.length,
+  });
+
+  for (let i = 0; i < listKecamatan.length; i++) {
+    concurrent.queue(async () => {
+      const kecamatan = listKecamatan[i];
+
+      const response =
+        await ENDPOINT_FUNCTION.presiden.get_suara_by_kelurahan_desa({
+          kecamatan_kode: kecamatan.kode,
+        });
+
+      await dbClient
+        .insert(dbSchema.ppwpKelurahanDesa)
+        .values(
+          response.data._flat_table.map((x) => {
+            const provinsi_kode = x.kelurahan_desa.substring(0, 2);
+            const provinsi_nama = listProvinsi.find(
+              (y) => y.kode === provinsi_kode,
+            )?.nama;
+            const kabupaten_kota_kode = x.kelurahan_desa.substring(0, 4);
+            const kabupaten_kota_nama = listKabupatenKota.find(
+              (y) => y.kode === kabupaten_kota_kode,
+            )?.nama;
+            const kecamatan_kode = x.kelurahan_desa;
+            const kecamatan_nama = listKecamatan.find(
+              (y) => y.kode === kecamatan_kode,
+            )?.nama;
+            const kelurahan_desa_kode = x.kelurahan_desa;
+            const kelurahan_desa_nama = listKelurahanDesa.find(
+              (y) => y.kode === kelurahan_desa_kode,
+            )?.nama;
+
+            return {
+              kode: x.kelurahan_desa,
+              provinsi_kode,
+              provinsi_nama,
+              kabupaten_kota_kode,
+              kabupaten_kota_nama,
+              kecamatan_kode,
+              kecamatan_nama,
+              kelurahan_desa_kode,
+              kelurahan_desa_nama,
+              suara_paslon_1: nullGuard(x["100025"]),
+              suara_paslon_2: nullGuard(x["100026"]),
+              suara_paslon_3: nullGuard(x["100027"]),
+              status_progress: x.status_progress,
+              psu: response.data.psu,
+              ts: response.data.ts,
+
+              url_page: response.pageUrl,
+              url_api: response.apiUrl,
+
+              fetch_count: 1,
+              persen: x.persen,
+            };
+          }),
+        )
+        .onConflictDoUpdate({
+          target: [dbSchema.ppwpKelurahanDesa.kode],
+          set: {
+            provinsi_kode: sql`EXCLUDED.provinsi_kode`,
+            provinsi_nama: sql`EXCLUDED.provinsi_nama`,
+            kabupaten_kota_kode: sql`EXCLUDED.kabupaten_kota_kode`,
+            kabupaten_kota_nama: sql`EXCLUDED.kabupaten_kota_nama`,
+            kecamatan_kode: sql`EXCLUDED.kecamatan_kode`,
+            kecamatan_nama: sql`EXCLUDED.kecamatan_nama`,
+            suara_paslon_1: sql`EXCLUDED.suara_paslon_1`,
+            suara_paslon_2: sql`EXCLUDED.suara_paslon_2`,
+            suara_paslon_3: sql`EXCLUDED.suara_paslon_3`,
+            persen: sql`EXCLUDED.persen`,
+            status_progress: sql`EXCLUDED.status_progress`,
+            psu: response.data.psu,
+            ts: response.data.ts,
+
+            url_page: response.pageUrl,
+            url_api: response.apiUrl,
+            updated_at: new Date(),
+            fetch_count: sql`${dbSchema.ppwpKelurahanDesa.fetch_count} + 1`,
+          },
+        })
+        .catch((e) => {
+          console.log(e);
+          logger.error(
+            "Error on insert data: Hitung Suara - Presiden - Kelurahan/Desa",
+            e,
+          );
+          throw e;
+        });
+
+      cli.increment();
+    });
+  }
+
+  await concurrent.run();
+
+  logger.info(
+    "Successfully inserted data: Hitung Suara - Presiden - Kelurahan/Desa",
+  );
+
+  process.exit(0);
+};
 
 const insertTpsDetail = async () => {
   const listTps = await dbClient.query.wilayah.findMany({
@@ -336,4 +813,8 @@ export const presidenActions = {
   insertTpsDetail,
   insertTpsDetailV2,
   updateTpsDetail,
+  getSuaraProvinsi,
+  getSuaraKabupatenKota,
+  getSuaraKecamatan,
+  getSuaraKelurahanDesa,
 };

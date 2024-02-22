@@ -57,21 +57,49 @@ const presiden = program
   .description("Get data penghitungan suara Presiden dan Wakil Presiden");
 
 presiden
-  .command("get-tps-detail")
+  .command("get-suara-by-provinsi")
+  .description("Get suara dari setiap provinsi")
+  .action(async () => {
+    await presidenActions.getSuaraProvinsi();
+  });
+
+presiden
+  .command("get-suara-by-kabupaten-kota")
+  .description("Get suara dari setiap kabupaten/kota")
+  .action(async () => {
+    await presidenActions.getSuaraKabupatenKota();
+  });
+
+presiden
+  .command("get-suara-by-kecamatan")
+  .description("Get suara dari setiap kecamatan")
+  .action(async () => {
+    await presidenActions.getSuaraKecamatan();
+  });
+
+presiden
+  .command("get-suara-by-kelurahan")
+  .description("Get suara dari setiap kelurahan/desa")
+  .action(async () => {
+    await presidenActions.getSuaraKelurahanDesa();
+  });
+
+presiden
+  .command("get-suara-by-tps")
   .description("Get TPS detail")
   .action(async () => {
     await presidenActions.insertTpsDetail();
   });
 
 presiden
-  .command("get-tps-detail-v2")
+  .command("get-suara-by-tps-v2")
   .description("Get TPS detail v2")
   .action(async () => {
     await presidenActions.insertTpsDetailV2();
   });
 
 presiden
-  .command("update-tps-detail")
+  .command("update-suara-by-tps")
   .description("Update TPS detail")
   .action(async () => {
     await presidenActions.updateTpsDetail();
