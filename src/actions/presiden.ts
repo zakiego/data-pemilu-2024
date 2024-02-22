@@ -4,7 +4,7 @@ import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
 import { nullGuard } from "@/utils/type";
-import { eq, inArray, or, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 
 const QUERY = dbClient.query.ppwpTps;
 const TPS_SCHEMA = dbSchema.ppwpTps;

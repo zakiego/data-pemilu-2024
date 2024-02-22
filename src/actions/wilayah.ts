@@ -1,9 +1,8 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import z from "zod";
 import { dbClient, dbSchema } from "@/db";
 import { logger } from "@/utils/log";
 import { ENDPOINT_FUNCTION } from "@/endpoint";
-import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 
 const wilayahFetcher = async (endpoint: string) => {

@@ -4,8 +4,7 @@ import { options } from "@/index";
 import { createConcurrentManager } from "@/utils/concurrent";
 import { logger } from "@/utils/log";
 import { initCli } from "@/utils/progress";
-import { nullGuard } from "@/utils/type";
-import { eq, inArray, sql, count, asc } from "drizzle-orm";
+import { eq, sql, asc } from "drizzle-orm";
 
 const QUERY_TPS = dbClient.query.pdpdTpsList;
 const SCHEMA_DAPIL_CALON_LIST = dbSchema.pdpdCalonList;
