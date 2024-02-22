@@ -39,13 +39,14 @@ const getProvinsi = async () => {
     .values(data)
     .onConflictDoNothing()
     .returning();
+
   logger.info(`Inserting data for provinsi: ${insert.length} rows`);
 };
 
 const getKabupatenKota = async () => {
   const listProvinsi = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 1), eq(table.is_fetched, false)),
+      and(eq(table.tingkat, 1), eq(table.is_fetched_wilayah, false)),
   });
   const count = listProvinsi.length;
 
@@ -74,7 +75,7 @@ const getKabupatenKota = async () => {
         const update_is_fetched = await trx
           .update(dbSchema.wilayah)
           .set({
-            is_fetched: true,
+            is_fetched_wilayah: true,
             updated_at: new Date(),
           })
           .where(eq(dbSchema.wilayah.kode, provinsi.kode));
@@ -94,7 +95,7 @@ const getKabupatenKota = async () => {
 const getKecamatan = async () => {
   const listKabupatenKota = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 2), eq(table.is_fetched, false)),
+      and(eq(table.tingkat, 2), eq(table.is_fetched_wilayah, false)),
   });
   const count = listKabupatenKota.length;
   logger.info(`Successfully queried data for kecamatan: ${count} rows`);
@@ -126,7 +127,7 @@ const getKecamatan = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched: true,
+              is_fetched_wilayah: true,
               updated_at: new Date(),
             })
             .where(eq(dbSchema.wilayah.kode, kabupatenKota.kode));
@@ -149,7 +150,7 @@ const getKecamatan = async () => {
 const getKelurahan = async () => {
   const listKecamatan = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 3), eq(table.is_fetched, false)),
+      and(eq(table.tingkat, 3), eq(table.is_fetched_wilayah, false)),
   });
   const count = listKecamatan.length;
 
@@ -180,7 +181,7 @@ const getKelurahan = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched: true,
+              is_fetched_wilayah: true,
               updated_at: new Date(),
             })
             .where(eq(dbSchema.wilayah.kode, kecamatan.kode));
@@ -203,7 +204,7 @@ const getKelurahan = async () => {
 const getTPS = async () => {
   const listKelurahan = await dbClient.query.wilayah.findMany({
     where: (table, { eq, and }) =>
-      and(eq(table.tingkat, 4), eq(table.is_fetched, false)),
+      and(eq(table.tingkat, 4), eq(table.is_fetched_wilayah, false)),
   });
   const count = listKelurahan.length;
 
@@ -217,7 +218,7 @@ const getTPS = async () => {
     concurrent.queue(async () => {
       const kelurahan = listKelurahan[i];
 
-      const response = await ENDPOINT_FUNCTION.pilpres.wilayah.get_list_tps(
+      const response = await ENDPOINT_FUNCTION.wilayah.get_list_tps(
         kelurahan.kode,
       );
 
@@ -238,7 +239,7 @@ const getTPS = async () => {
           const update_is_fetched = await trx
             .update(dbSchema.wilayah)
             .set({
-              is_fetched: true,
+              is_fetched_wilayah: true,
               updated_at: new Date(),
             })
             .where(eq(dbSchema.wilayah.kode, kelurahan.kode));
