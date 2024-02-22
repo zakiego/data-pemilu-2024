@@ -1,6 +1,6 @@
 import { dprActions } from "@/actions/dpr";
 import { presidenActions } from "@/actions/presiden";
-import { getWilayah } from "@/actions/get-wilayah";
+import { getWilayah } from "@/actions/wilayah";
 import { Command } from "commander";
 import { z } from "zod";
 import { partaiAction } from "@/actions/partai";
@@ -10,8 +10,9 @@ const program = new Command();
 
 // ----------------- Options -----------------
 program
-  .option("-c, --concurrent <number>", "Concurrent", "5")
-  .option("-l, --limit <number>", "Set limit")
+  .description("Scrapper Pemilu 2024")
+  .option("-c, --concurrent <number>", "Set number of concurrent request", "5")
+  .option("-l, --limit <number>", "Set limit of request")
   .option("--no-dump", "Don't save file")
   .option("-d, --debug", "Debug mode")
   .parse();
@@ -26,7 +27,7 @@ export const options = z
   .parse(program.opts());
 
 // ----------------- Partai -----------------
-const partai = program.command("partai").description("Partai");
+const partai = program.command("partai").description("Get data partai-partai");
 
 partai
   .command("get-partai-list")
@@ -35,31 +36,41 @@ partai
     await partaiAction.inserPartaiList();
   });
 
-// ----------------- Pilpres -----------------
-const pilpres = program.command("pilpres").description("Pilpres");
+// ----------------- Wilayah -----------------
 
-pilpres
+const wilayah = program
+  .command("wilayah")
+  .description(
+    "Get data wilayah: Provinsi, Kabupaten/Kota, Kecamatan, Kelurahan, TPS",
+  );
+
+wilayah
   .command("get-wilayah")
   .description("Get wilayah")
   .action(async () => {
     await getWilayah();
   });
 
-pilpres
+// ----------------- Pilpres -----------------
+const presiden = program
+  .command("presiden")
+  .description("Get data penghitungan suara Presiden dan Wakil Presiden");
+
+presiden
   .command("get-tps-detail")
   .description("Get TPS detail")
   .action(async () => {
     await presidenActions.insertTpsDetail();
   });
 
-pilpres
+presiden
   .command("get-tps-detail-v2")
   .description("Get TPS detail v2")
   .action(async () => {
     await presidenActions.insertTpsDetailV2();
   });
 
-pilpres
+presiden
   .command("update-tps-detail")
   .description("Update TPS detail")
   .action(async () => {
@@ -68,7 +79,9 @@ pilpres
 
 // ----------------- DPR -----------------
 
-const dpr = program.command("dpr").description("DPR");
+const dpr = program
+  .command("dpr")
+  .description("Get data penghitungan suara DPR RI");
 
 dpr
   .command("insert-tps-detail")
@@ -107,7 +120,9 @@ dpr
 
 // ----------------- DPD -----------------
 
-const dpd = program.command("dpd").description("DPD");
+const dpd = program
+  .command("dpd")
+  .description("Get data penghitungan suara DPD");
 
 dpd
   .command("init-tps-list")
