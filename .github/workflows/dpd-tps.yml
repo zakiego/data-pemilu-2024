@@ -1,9 +1,6 @@
-name: Pull Data DPD
+name: Pull Data DPD TPS
 
 on:
-  # push:
-  #   branches:
-  #     - main
   schedule:
     - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 

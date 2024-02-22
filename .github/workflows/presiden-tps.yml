@@ -1,4 +1,4 @@
-name: Pull Data Presiden dan Wakil Presiden
+name: Pull Data Presiden dan Wakil Presiden TPS
 
 on:
   schedule:
