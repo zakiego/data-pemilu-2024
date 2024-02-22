@@ -22,5 +22,5 @@ jobs:
         with:
           python-version: "3.9"
           cache: "pip" # caching pip dependencies
-      - run: pip install psycopg2 SQLAlchemy pandas
+      - run: pip install psycopg2-binary psycopg2 SQLAlchemy pandas
       - run: python src/releaser/main.py
