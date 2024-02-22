@@ -16,6 +16,7 @@ export const wilayah = pgTable(
     nama: text("nama").notNull(),
     tingkat: integer("tingkat").notNull(),
 
+    is_fetched_wilayah: boolean("_is_fetched_wilayah").default(false),
     is_fetched_presiden: boolean("_is_fetched_presiden").default(false),
     is_fetched_dpr: boolean("_is_fetched_dpr").default(false),
     is_fetched_dpd: boolean("_is_fetched_dpd").default(false),
