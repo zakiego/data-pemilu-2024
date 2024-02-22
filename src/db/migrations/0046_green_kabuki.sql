@@ -1,0 +1,1 @@
+DROP TABLE "ppwp_provinsi";

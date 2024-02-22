@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_nasional" ADD COLUMN "persen_suara_masuk" numeric;

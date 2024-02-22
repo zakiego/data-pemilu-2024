@@ -3,10 +3,133 @@ import {
   index,
   integer,
   json,
+  numeric,
   pgTable,
+  real,
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
+
+export const ppwpNasional = pgTable("ppwp_nasional", {
+  kode: text("kode").primaryKey(),
+
+  suara_paslon_1: integer("suara_paslon_1"),
+  suara_paslon_2: integer("suara_paslon_2"),
+  suara_paslon_3: integer("suara_paslon_3"),
+
+  persen_suara_masuk: real("persen_suara_masuk"),
+  psu: text("psu"),
+  ts: text("ts"),
+
+  url_page: text("_url_page"),
+  url_api: text("_url_api"),
+  updated_at: timestamp("_updated_at").defaultNow(),
+  created_at: timestamp("_created_at").defaultNow(),
+  fetch_count: integer("_fetch_count").default(0),
+});
+
+export const ppwpProvinsi = pgTable("ppwp_provinsi", {
+  kode: text("kode").primaryKey(),
+  provinsi_kode: text("provinsi_kode"),
+  provinsi_nama: text("provinsi_nama"),
+
+  suara_paslon_1: integer("suara_paslon_1"),
+  suara_paslon_2: integer("suara_paslon_2"),
+  suara_paslon_3: integer("suara_paslon_3"),
+
+  persen: real("persen"),
+  status_progress: boolean("status_progress"),
+  psu: text("psu"),
+  ts: text("ts"),
+
+  url_page: text("_url_page"),
+  url_api: text("_url_api"),
+  updated_at: timestamp("_updated_at").defaultNow(),
+  created_at: timestamp("_created_at").defaultNow(),
+  fetch_count: integer("_fetch_count").default(0),
+});
+
+export const ppwpKabupatenKota = pgTable("ppwp_kabupaten_kota", {
+  kode: text("kode").primaryKey(),
+  provinsi_kode: text("provinsi_kode"),
+  provinsi_nama: text("provinsi_nama"),
+
+  kabupaten_kota_kode: text("kabupaten_kota_kode"),
+  kabupaten_kota_nama: text("kabupaten_kota_nama"),
+
+  suara_paslon_1: integer("suara_paslon_1"),
+  suara_paslon_2: integer("suara_paslon_2"),
+  suara_paslon_3: integer("suara_paslon_3"),
+
+  persen: real("persen"),
+  status_progress: boolean("status_progress"),
+  psu: text("psu"),
+  ts: text("ts"),
+
+  url_page: text("_url_page"),
+  url_api: text("_url_api"),
+  updated_at: timestamp("_updated_at").defaultNow(),
+  created_at: timestamp("_created_at").defaultNow(),
+  fetch_count: integer("_fetch_count").default(0),
+});
+
+export const ppwpKecamatan = pgTable("ppwp_kecamatan", {
+  kode: text("kode").primaryKey(),
+  provinsi_kode: text("provinsi_kode"),
+  provinsi_nama: text("provinsi_nama"),
+
+  kabupaten_kota_kode: text("kabupaten_kota_kode"),
+  kabupaten_kota_nama: text("kabupaten_kota_nama"),
+
+  kecamatan_kode: text("kecamatan_kode"),
+  kecamatan_nama: text("kecamatan_nama"),
+
+  suara_paslon_1: integer("suara_paslon_1"),
+  suara_paslon_2: integer("suara_paslon_2"),
+  suara_paslon_3: integer("suara_paslon_3"),
+
+  persen: real("persen"),
+  status_progress: boolean("status_progress"),
+  psu: text("psu"),
+  ts: text("ts"),
+
+  url_page: text("_url_page"),
+  url_api: text("_url_api"),
+  updated_at: timestamp("_updated_at").defaultNow(),
+  created_at: timestamp("_created_at").defaultNow(),
+  fetch_count: integer("_fetch_count").default(0),
+});
+
+export const ppwpKelurahanDesa = pgTable("ppwp_kelurahan_desa", {
+  kode: text("kode").primaryKey(),
+  provinsi_kode: text("provinsi_kode"),
+  provinsi_nama: text("provinsi_nama"),
+
+  kabupaten_kota_kode: text("kabupaten_kota_kode"),
+  kabupaten_kota_nama: text("kabupaten_kota_nama"),
+
+  kecamatan_kode: text("kecamatan_kode"),
+  kecamatan_nama: text("kecamatan_nama"),
+
+  kelurahan_desa_kode: text("kelurahan_desa_kode"),
+  kelurahan_desa_nama: text("kelurahan_desa_nama"),
+
+  suara_paslon_1: integer("suara_paslon_1"),
+  suara_paslon_2: integer("suara_paslon_2"),
+  suara_paslon_3: integer("suara_paslon_3"),
+
+  persen: real("persen"),
+  status_progress: boolean("status_progress"),
+  psu: text("psu"),
+  ts: text("ts"),
+
+  url_page: text("_url_page"),
+  url_api: text("_url_api"),
+
+  updated_at: timestamp("_updated_at").defaultNow(),
+  created_at: timestamp("_created_at").defaultNow(),
+  fetch_count: integer("_fetch_count").default(0),
+});
 
 export const ppwpTps = pgTable("ppwp_tps", {
   kode: text("kode").primaryKey(),

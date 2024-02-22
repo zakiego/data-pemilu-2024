@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_nasional" RENAME COLUMN "id" TO "kode";

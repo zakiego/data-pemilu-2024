@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS "ppwp_kecamatan" (
+	"kode" text PRIMARY KEY NOT NULL,
+	"provinsi_kode" text,
+	"provinsi_nama" text,
+	"kabupaten_kota_kode" text,
+	"kabupaten_kota_nama" text,
+	"kecamatan_kode" text,
+	"kecamatan_nama" text,
+	"suara_paslon_1" integer,
+	"suara_paslon_2" integer,
+	"suara_paslon_3" integer,
+	"persen" real,
+	"status_progress" boolean,
+	"psu" text,
+	"ts" text,
+	"_updated_at" timestamp DEFAULT now(),
+	"_created_at" timestamp DEFAULT now(),
+	"_fetch_count" integer DEFAULT 0
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "ppwp_kelurahan_desa" (
+	"kode" text PRIMARY KEY NOT NULL,
+	"provinsi_kode" text,
+	"provinsi_nama" text,
+	"kabupaten_kota_kode" text,
+	"kabupaten_kota_nama" text,
+	"kecamatan_kode" text,
+	"kecamatan_nama" text,
+	"kelurahan_desa_kode" text,
+	"kelurahan_desa_nama" text,
+	"suara_paslon_1" integer,
+	"suara_paslon_2" integer,
+	"suara_paslon_3" integer,
+	"persen" real,
+	"status_progress" boolean,
+	"psu" text,
+	"ts" text,
+	"_updated_at" timestamp DEFAULT now(),
+	"_created_at" timestamp DEFAULT now(),
+	"_fetch_count" integer DEFAULT 0
+);

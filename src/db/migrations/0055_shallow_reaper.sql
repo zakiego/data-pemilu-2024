@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_nasional" ALTER COLUMN "persen_suara_masuk" SET DATA TYPE real;

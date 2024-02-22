@@ -302,6 +302,118 @@
       "when": 1708578345720,
       "tag": "0042_steady_marvel_zombies",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "5",
+      "when": 1708579132697,
+      "tag": "0043_lean_franklin_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "5",
+      "when": 1708580233107,
+      "tag": "0044_graceful_living_tribunal",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "5",
+      "when": 1708580291897,
+      "tag": "0045_thin_silver_centurion",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "5",
+      "when": 1708580323838,
+      "tag": "0046_green_kabuki",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "5",
+      "when": 1708580350491,
+      "tag": "0047_needy_morlocks",
+      "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "5",
+      "when": 1708580452621,
+      "tag": "0048_brown_dazzler",
+      "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "5",
+      "when": 1708580457776,
+      "tag": "0049_certain_hedge_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "5",
+      "when": 1708583500223,
+      "tag": "0050_fluffy_leader",
+      "breakpoints": true
+    },
+    {
+      "idx": 51,
+      "version": "5",
+      "when": 1708583541176,
+      "tag": "0051_little_firebrand",
+      "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "5",
+      "when": 1708583809103,
+      "tag": "0052_freezing_norman_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "5",
+      "when": 1708583989403,
+      "tag": "0053_flashy_dormammu",
+      "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "5",
+      "when": 1708584133789,
+      "tag": "0054_remarkable_moonstone",
+      "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "5",
+      "when": 1708584148299,
+      "tag": "0055_shallow_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "5",
+      "when": 1708584757999,
+      "tag": "0056_free_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 57,
+      "version": "5",
+      "when": 1708586963098,
+      "tag": "0057_unknown_rogue",
+      "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "5",
+      "when": 1708587922514,
+      "tag": "0058_rare_paibok",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_provinsi" ADD COLUMN "persen" integer;

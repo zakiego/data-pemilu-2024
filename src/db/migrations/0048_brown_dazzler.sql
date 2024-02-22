@@ -1,0 +1,1 @@
+ALTER TABLE "ppwp_provinsi" DROP COLUMN IF EXISTS "persen";
