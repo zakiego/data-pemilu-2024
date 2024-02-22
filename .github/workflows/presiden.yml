@@ -1,9 +1,6 @@
 name: Pull Data Presiden dan Wakil Presiden
 
 on:
-  # push:
-  #   branches:
-  #     - main
   schedule:
     - cron: "0 0 * * *" # at GMT+8, it will run at 8 AM
 
@@ -30,38 +27,20 @@ jobs:
       - name: Install
         run: bun install
       - name: Run 1
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 2
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 3
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 4
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 5
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 6
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 7
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 8
-        run: bun start pilpres update-tps-detail -c 100 -l 100000
+        run: update-suara-by-tps -c 100 -l 100000
       - name: Run 9
-        run: bun start pilpres update-tps-detail -c 100 -l 80000
-      # - name: Update Submodule
-      #   run: |
-      #     git submodule init
-      #     git submodule update --remote
-
-      # - name: Make Changes and Push
-      #   run: |
-      #     # Navigate to the submodule directory
-      #     cd dump
-
-      #     # Make your changes (e.g., modify files)
-
-      #     # Add and commit changes
-      #     git add .
-      #     git commit -m "Update submodule"
-
-      #     # Push changes to the submodule's repository
-      #     git push origin HEAD:main
+        run: update-suara-by-tps -c 100 -l 80000
