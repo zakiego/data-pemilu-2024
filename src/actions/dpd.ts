@@ -127,67 +127,39 @@ const getTpsDetail = async () => {
       );
 
       const insert_and_update = await dbClient.transaction(async (trx) => {
-        if (response.suara.length > 0) {
-          // --- Insert TPS Chart
-          await dbClient
-            .insert(SCHEMA_TPS_CHART)
-            .values(
-              response.suara.map((suara) => ({
-                calon_id: suara.calon_id,
-                tps: tps.kode,
-                jumlah_suara: suara.jumlah_suara,
-                ts: response.ts,
-              })),
-            )
-            .onConflictDoUpdate({
-              target: [SCHEMA_TPS_CHART.tps, SCHEMA_TPS_CHART.calon_id],
-              set: {
-                jumlah_suara: sql`EXCLUDED.jumlah_suara`,
-                ts: sql`EXCLUDED.ts`,
-                fetch_count: sql`${SCHEMA_TPS_CHART.fetch_count} + 1`,
-                updated_at: new Date(),
-              },
-            })
-            .catch((e) => {
-              console.log("Error on insert TPS Chart", e);
-              throw e;
-            });
-        }
+          if (response.suara.length > 0) {
+            // --- Insert TPS Chart
+            await trx
+              .insert(SCHEMA_TPS_CHART)
+              .values(
+                response.suara.map((suara) => ({
+                  calon_id: suara.calon_id,
+                  tps: tps.kode,
+                  jumlah_suara: suara.jumlah_suara,
+                  ts: response.ts,
+                })),
+              )
+              .onConflictDoUpdate({
+                target: [SCHEMA_TPS_CHART.tps, SCHEMA_TPS_CHART.calon_id],
+                set: {
+                  jumlah_suara: sql`EXCLUDED.jumlah_suara`,
+                  ts: sql`EXCLUDED.ts`,
+                  fetch_count: sql`${SCHEMA_TPS_CHART.fetch_count} + 1`,
+                  updated_at: new Date(),
+                },
+              })
+              .catch((e) => {
+                console.log("Error on insert TPS Chart", e);
+                throw e;
+              });
+          }
 
-        // --- Insert TPS Administrasi
-        await trx
-          .insert(SCHEMA_TPS_ADMINISTRASI)
-          .values({
-            tps: tps.kode,
+          // --- Insert TPS Administrasi
+          await trx
+            .insert(SCHEMA_TPS_ADMINISTRASI)
+            .values({
+              tps: tps.kode,
 
-            images: response.images.map((image) => image ?? ""),
-            suara_sah: response.administrasi?.suara_sah,
-            suara_total: response.administrasi?.suara_total,
-            pemilih_dpt_j: response.administrasi?.pemilih_dpt_j,
-            pemilih_dpt_l: response.administrasi?.pemilih_dpt_l,
-            pemilih_dpt_p: response.administrasi?.pemilih_dpt_p,
-            pengguna_dpt_j: response.administrasi?.pengguna_dpt_j,
-            pengguna_dpt_l: response.administrasi?.pengguna_dpt_l,
-            pengguna_dpt_p: response.administrasi?.pengguna_dpt_p,
-            pengguna_dptb_j: response.administrasi?.pengguna_dptb_j,
-            pengguna_dptb_l: response.administrasi?.pengguna_dptb_l,
-            pengguna_dptb_p: response.administrasi?.pengguna_dptb_p,
-            suara_tidak_sah: response.administrasi?.suara_tidak_sah,
-            pengguna_total_j: response.administrasi?.pengguna_total_j,
-            pengguna_total_l: response.administrasi?.pengguna_total_l,
-            pengguna_total_p: response.administrasi?.pengguna_total_p,
-            pengguna_non_dpt_j: response.administrasi?.pengguna_non_dpt_j,
-            pengguna_non_dpt_l: response.administrasi?.pengguna_non_dpt_l,
-            pengguna_non_dpt_p: response.administrasi?.pengguna_non_dpt_p,
-            ts: response.ts,
-            psu: response.psu,
-
-            created_at: new Date(),
-            updated_at: new Date(),
-          })
-          .onConflictDoUpdate({
-            target: SCHEMA_TPS_ADMINISTRASI.tps,
-            set: {
               images: response.images.map((image) => image ?? ""),
               suara_sah: response.administrasi?.suara_sah,
               suara_total: response.administrasi?.suara_total,
@@ -210,30 +182,62 @@ const getTpsDetail = async () => {
               ts: response.ts,
               psu: response.psu,
 
-              fetch_count: sql`${SCHEMA_TPS_ADMINISTRASI.fetch_count} + 1`,
+              created_at: new Date(),
               updated_at: new Date(),
-            },
-          })
-          .catch((e) => {
-            console.log("Error on insert TPS Administrasi", e);
-            throw e;
-          });
+            })
+            .onConflictDoUpdate({
+              target: SCHEMA_TPS_ADMINISTRASI.tps,
+              set: {
+                images: response.images.map((image) => image ?? ""),
+                suara_sah: response.administrasi?.suara_sah,
+                suara_total: response.administrasi?.suara_total,
+                pemilih_dpt_j: response.administrasi?.pemilih_dpt_j,
+                pemilih_dpt_l: response.administrasi?.pemilih_dpt_l,
+                pemilih_dpt_p: response.administrasi?.pemilih_dpt_p,
+                pengguna_dpt_j: response.administrasi?.pengguna_dpt_j,
+                pengguna_dpt_l: response.administrasi?.pengguna_dpt_l,
+                pengguna_dpt_p: response.administrasi?.pengguna_dpt_p,
+                pengguna_dptb_j: response.administrasi?.pengguna_dptb_j,
+                pengguna_dptb_l: response.administrasi?.pengguna_dptb_l,
+                pengguna_dptb_p: response.administrasi?.pengguna_dptb_p,
+                suara_tidak_sah: response.administrasi?.suara_tidak_sah,
+                pengguna_total_j: response.administrasi?.pengguna_total_j,
+                pengguna_total_l: response.administrasi?.pengguna_total_l,
+                pengguna_total_p: response.administrasi?.pengguna_total_p,
+                pengguna_non_dpt_j: response.administrasi?.pengguna_non_dpt_j,
+                pengguna_non_dpt_l: response.administrasi?.pengguna_non_dpt_l,
+                pengguna_non_dpt_p: response.administrasi?.pengguna_non_dpt_p,
+                ts: response.ts,
+                psu: response.psu,
 
-        // --- Update TPS List
-        await trx
-          .update(SCHEMA_TPS_LIST)
-          .set({
-            updated_at: new Date(),
-            fetch_count: sql`${SCHEMA_TPS_LIST.fetch_count} + 1`,
-          })
-          .where(eq(SCHEMA_TPS_LIST.kode, tps.kode))
-          .catch((e) => {
-            console.log("Error on update TPS List", e);
-            throw e;
-          });
+                fetch_count: sql`${SCHEMA_TPS_ADMINISTRASI.fetch_count} + 1`,
+                updated_at: new Date(),
+              },
+            })
+            .catch((e) => {
+              console.log("Error on insert TPS Administrasi", e);
+              throw e;
+            });
 
-        cli.increment();
-      });
+          // --- Update TPS List
+          await trx
+            .update(SCHEMA_TPS_LIST)
+            .set({
+              updated_at: new Date(),
+              fetch_count: sql`${SCHEMA_TPS_LIST.fetch_count} + 1`,
+            })
+            .where(eq(SCHEMA_TPS_LIST.kode, tps.kode))
+            .catch((e) => {
+              console.log("Error on update TPS List", e);
+              throw e;
+            });
+
+          cli.increment();
+        })
+        .catch((e) => {
+          console.log("Error on transaction", e);
+          throw e;
+        });
 
       logger.info(
         `${orderId} - Successfully updated data for TPS: ${tps.kode}`,
