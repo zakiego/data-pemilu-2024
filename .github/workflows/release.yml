@@ -10,7 +10,6 @@ jobs:
     timeout-minutes: 30 # 1 hour
     steps:
       - uses: actions/checkout@v4
-      - run: whoami
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.3
         with:
