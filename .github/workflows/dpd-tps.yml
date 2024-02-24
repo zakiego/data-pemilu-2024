@@ -1,9 +1,9 @@
 name: Pull Data DPD TPS
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   schedule:
     - cron: "0 1 * * *" # at GMT+7, it will run at 8:00 AM
 
@@ -31,28 +31,28 @@ jobs:
         run: bun install
 
       - name: Run Batch 1
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 2
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 3
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 4
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 5
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 6
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 7
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 8
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
 
       - name: Run Batch 9
-        run: bun start dpd get-tps-detail --no-dump -l 100000
+        run: bun start dpd get-tps-detail --no-dump -l 100000 -c 200
