@@ -8,43 +8,47 @@ export const migrationClient = drizzle(postgres(env.DATABASE_URL, { max: 1 }));
 
 export { dbSchema };
 
-declare global {
-  // biome-ignore lint/style/noVar: <explanation>
-  var db: PostgresJsDatabase<typeof dbSchema> | undefined;
-}
+// declare global {
+//   // biome-ignore lint/style/noVar: <explanation>
+//   var db: PostgresJsDatabase<typeof dbSchema> | undefined;
+// }
 
-// biome-ignore lint/suspicious/noRedeclare: <explanation>
-let db: PostgresJsDatabase<typeof dbSchema>;
+// // biome-ignore lint/suspicious/noRedeclare: <explanation>
+// let db: PostgresJsDatabase<typeof dbSchema>;
 
-if (env.NODE_ENV === "production") {
-  db = drizzle(
-    postgres(env.DATABASE_URL, {
-      max: 10,
-    }),
-    { schema: dbSchema },
-  );
-} else {
-  if (!global.db)
-    global.db = drizzle(
-      postgres(env.DATABASE_URL, {
-        max: 70,
-      }),
-      { schema: dbSchema },
-    );
+// if (env.NODE_ENV === "production") {
+//   db = drizzle(
+//     postgres(env.DATABASE_URL, {
+//       max: 50,
+//     }),
+//     { schema: dbSchema },
+//   );
+// } else {
+//   if (!global.db)
+//     global.db = drizzle(
+//       postgres(env.DATABASE_URL, {
+//         max: 70,
+//       }),
+//       { schema: dbSchema },
+//     );
 
-  db = global.db;
-}
+//   db = global.db;
+// }
 
-export const dbClient = db;
+// export const dbClient = db;
 
-// import { Client, Pool } from "pg";
-// const pool = new Pool({
-//   connectionString: env.DATABASE_URL,
-//   log(...messages) {
-//     console.log("DATABASE LOG:", ...messages);
-//   },
-// });
+import { Client, Pool } from "pg";
+export const pool = new Pool({
+  connectionString: env.DATABASE_URL,
+  // log(...messages) {
+  //   console.log("DATABASE LOG:", ...messages);
+  // },
+  maxUses: 70,
+  connectionTimeoutMillis: 10_000, // 10 seconds
+  idleTimeoutMillis: 10_000, // 10 seconds
+  allowExitOnIdle: true,
+});
 
-// export const dbClient = drizzleNodePostgres(pool, {
-//   schema: dbSchema,
-// });
+export const dbClient = drizzleNodePostgres(pool, {
+  schema: dbSchema,
+});
