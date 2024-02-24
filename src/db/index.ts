@@ -22,9 +22,7 @@ if (env.NODE_ENV === "production") {
   if (!global.db)
     global.db = drizzle(
       postgres(env.DATABASE_URL, {
-        // debug(connection, query, parameters, paramTypes) {
-        //   console.log("QUERY:", query, parameters, paramTypes);
-        // },
+        max: 70,
       }),
       { schema: dbSchema },
     );
