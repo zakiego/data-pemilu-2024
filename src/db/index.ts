@@ -44,8 +44,8 @@ export const pool = new Pool({
   //   console.log("DATABASE LOG:", ...messages);
   // },
   maxUses: 70,
-  connectionTimeoutMillis: 10_000, // 10 seconds
-  idleTimeoutMillis: 10_000, // 10 seconds
+  connectionTimeoutMillis: 20_000, // 20 seconds
+  idleTimeoutMillis: 30_000, // 30 seconds
   allowExitOnIdle: true,
 });
 
