@@ -17,8 +17,8 @@ jobs:
     timeout-minutes: 300 # 5 hours
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+        # with:
+        #   submodules: recursive
 
       - uses: oven-sh/setup-bun@v1
         with:
