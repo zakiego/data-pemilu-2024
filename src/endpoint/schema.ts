@@ -5,4 +5,5 @@ export const psuEnum = z.enum([
   "Pemungutan Suara Ulang",
   "Penghitungan Suara Ulang",
   "Pemungutan Suara Susulan",
+  "Pemungutan Suara Lanjutan",
 ]);
