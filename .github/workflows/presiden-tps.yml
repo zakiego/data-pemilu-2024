@@ -3,6 +3,7 @@ name: Pull Data Presiden dan Wakil Presiden TPS
 on:
   schedule:
     - cron: "0 0 * * *" # at GMT+7, it will run at 7:00 AM
+    - cron: "0 12 * * *" # at GMT+7, it will run at 7:00 PM
 
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
