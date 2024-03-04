@@ -19,7 +19,7 @@
     "@types/bun": "latest",
     "@types/cli-progress": "^3.11.5",
     "@types/lodash": "^4.14.202",
-    "@types/pg": "^8.11.0",
+    "@types/pg": "^8.11.2",
     "drizzle-kit": "^0.20.14"
   },
   "peerDependencies": {
@@ -28,10 +28,10 @@
   "dependencies": {
     "cli-progress": "^3.12.0",
     "concurrent-manager": "^1.1.0",
-    "drizzle-orm": "^0.29.3",
+    "drizzle-orm": "^0.29.4",
     "lodash": "^4.17.21",
     "pg": "^8.11.3",
-    "pino": "^8.17.2",
+    "pino": "^8.19.0",
     "pino-pretty": "^10.3.1",
     "postgres": "^3.4.3",
     "ulidx": "^2.3.0",
