@@ -4,7 +4,16 @@ import {
   pdpdTpsChart,
   pdpdTpsList,
 } from "@/db/schema/dpd";
-import { pdprDapilCalonList, pdprDapilList, pdprTps } from "@/db/schema/dpr";
+import {
+  pdprCalonList,
+  pdprDapilCalonList,
+  pdprDapilList,
+  pdprTps,
+  pdprTpsAdministrasi,
+  pdprTpsCaleg,
+  pdprTpsList,
+  pdprTpsPartai,
+} from "@/db/schema/dpr";
 import { partai } from "@/db/schema/partai";
 import {
   ppwpKabupatenKota,
@@ -37,4 +46,11 @@ export const dbSchema = {
   pdpdCalonList,
   pdpdTpsAdministrasi,
   pdpdTpsChart,
+
+  // ----------------- DPR -----------------
+  pdprTpsList,
+  pdprCalonList,
+  pdprTpsAdministrasi,
+  pdprTpsCaleg,
+  pdprTpsPartai,
 };

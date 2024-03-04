@@ -1,3 +1,4 @@
+import { partai } from "@/db/schema/partai";
 import { wilayah } from "@/db/schema/wilayah";
 import {
   boolean,
@@ -7,9 +8,11 @@ import {
   pgTable,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
+import { ulid } from "ulidx";
 
-export const pdprTps = pgTable("pdpr_tps", {
+export const pdprTps = pgTable("pdpr_tps_legacy", {
   kode: text("kode").primaryKey(),
   provinsi_kode: text("provinsi_kode").notNull(),
   provinsi_nama: text("provinsi_nama"),
@@ -78,7 +81,7 @@ export const pdprTps = pgTable("pdpr_tps", {
   fetch_count: integer("fetch_count").default(0),
 });
 
-export const pdprDapilList = pgTable("pdpr_dapil_list", {
+export const pdprDapilList = pgTable("pdpr_dapil_list_legacy", {
   id: integer("id").primaryKey(),
   nama: text("nama").notNull(),
   kode: text("kode").notNull(),
@@ -89,7 +92,7 @@ export const pdprDapilList = pgTable("pdpr_dapil_list", {
   is_calon_fetched: boolean("is_calon_fetched").default(false),
 });
 
-export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list", {
+export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list_legacy", {
   nama: text("nama").notNull(),
   jenis_kelamin: text("jenis_kelamin").notNull(),
   tempat_tinggal: text("tempat_tinggal").notNull(),
@@ -105,3 +108,122 @@ export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list", {
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
 });
+
+export const pdprTpsList = pgTable(
+  "pdpr_tps_list",
+  {
+    id: integer("id").primaryKey(),
+    kode: text("kode").notNull().unique(),
+    nama: text("nama").notNull(),
+    tingkat: integer("tingkat").notNull(),
+
+    fetch_count: integer("fetch_count").default(0),
+
+    updated_at: timestamp("updated_at").defaultNow(),
+    created_at: timestamp("created_at").defaultNow(),
+  },
+  (table) => {
+    return {
+      tingkat_index: index("pdpr_tps_list_tingkat_index").on(table.tingkat),
+      fetch_count_index: index("pdpr_tps_list_fetch_count_index").on(
+        table.fetch_count,
+      ),
+      updated_at_index: index("pdpr_tps_list_updated_at_index").on(
+        table.updated_at,
+      ),
+    };
+  },
+);
+
+export const pdprCalonList = pgTable("pdpr_calon_list", {
+  nama: text("nama").notNull(),
+  nomor_urut: integer("nomor_urut").notNull(),
+  jenis_kelamin: text("jenis_kelamin").notNull(),
+  tempat_tinggal: text("tempat_tinggal").notNull(),
+  dapil_kode: text("dapil_kode").notNull(),
+  calon_id: text("calon_id").primaryKey(),
+
+  updated_at: timestamp("updated_at").defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+export const pdprTpsAdministrasi = pgTable("pdpr_tps_administrasi", {
+  _id: text("_id").primaryKey().$defaultFn(ulid),
+
+  tps: text("tps").unique().notNull(),
+
+  images: text("images").array(),
+
+  suara_sah: integer("suara_sah"),
+  suara_total: integer("suara_total"),
+  pemilih_dpt_j: integer("pemilih_dpt_j"),
+  pemilih_dpt_l: integer("pemilih_dpt_l"),
+  pemilih_dpt_p: integer("pemilih_dpt_p"),
+  pengguna_dpt_j: integer("pengguna_dpt_j"),
+  pengguna_dpt_l: integer("pengguna_dpt_l"),
+  pengguna_dpt_p: integer("pengguna_dpt_p"),
+  pengguna_dptb_j: integer("pengguna_dptb_j"),
+  pengguna_dptb_l: integer("pengguna_dptb_l"),
+  pengguna_dptb_p: integer("pengguna_dptb_p"),
+  suara_tidak_sah: integer("suara_tidak_sah"),
+  pengguna_total_j: integer("pengguna_total_j"),
+  pengguna_total_l: integer("pengguna_total_l"),
+  pengguna_total_p: integer("pengguna_total_p"),
+  pengguna_non_dpt_j: integer("pengguna_non_dpt_j"),
+  pengguna_non_dpt_l: integer("pengguna_non_dpt_l"),
+  pengguna_non_dpt_p: integer("pengguna_non_dpt_p"),
+
+  ts: text("ts").notNull(),
+  psu: text("psu"),
+
+  fetch_count: integer("fetch_count").default(0),
+  updated_at: timestamp("updated_at").defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+export const pdprTpsPartai = pgTable(
+  "pdpr_tps_partai",
+  {
+    _id: text("_id").primaryKey().$defaultFn(ulid),
+    tps: text("tps").references(() => pdprTpsList.kode),
+
+    partai_id: text("partai_id"),
+
+    jumlah_suara_total: integer("jumlah_suara_total").notNull(),
+    jumlah_suara_partai: integer("jumlah_suara_partai").notNull(),
+
+    ts: text("ts").notNull(),
+
+    fetch_count: integer("fetch_count").default(0),
+    updated_at: timestamp("updated_at").defaultNow(),
+    created_at: timestamp("created_at").defaultNow(),
+  },
+  (t) => ({
+    tps_partai_id_unique: unique("pdpr_tps_partai_tps_partai_id_unique").on(
+      t.tps,
+      t.partai_id,
+    ),
+  }),
+);
+
+export const pdprTpsCaleg = pgTable(
+  "pdpr_tps_caleg",
+  {
+    _id: text("_id").primaryKey().$defaultFn(ulid),
+    calon_id: text("calon_id").references(() => pdprCalonList.calon_id),
+    tps: text("tps").references(() => pdprTpsList.kode),
+    jumlah_suara: integer("jumlah_suara").notNull(),
+
+    ts: text("ts").notNull(),
+
+    fetch_count: integer("fetch_count").default(0),
+    updated_at: timestamp("updated_at").defaultNow(),
+    created_at: timestamp("created_at").defaultNow(),
+  },
+  (t) => ({
+    tps_calon_id_unique: unique("pdpr_tps_chart_tps_calon_id_unique").on(
+      t.tps,
+      t.calon_id,
+    ),
+  }),
+);

@@ -414,6 +414,48 @@
       "when": 1708587922514,
       "tag": "0058_rare_paibok",
       "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "5",
+      "when": 1709529639238,
+      "tag": "0059_skinny_rockslide",
+      "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "5",
+      "when": 1709529700287,
+      "tag": "0060_clumsy_warbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 61,
+      "version": "5",
+      "when": 1709563402237,
+      "tag": "0061_peaceful_preak",
+      "breakpoints": true
+    },
+    {
+      "idx": 62,
+      "version": "5",
+      "when": 1709565052917,
+      "tag": "0062_acoustic_firebrand",
+      "breakpoints": true
+    },
+    {
+      "idx": 63,
+      "version": "5",
+      "when": 1709565073518,
+      "tag": "0063_great_steel_serpent",
+      "breakpoints": true
+    },
+    {
+      "idx": 64,
+      "version": "5",
+      "when": 1709565183317,
+      "tag": "0064_superb_warlock",
+      "breakpoints": true
     }
   ]
 }
