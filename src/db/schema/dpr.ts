@@ -214,7 +214,7 @@ export const pdprTpsCaleg = pgTable(
   "pdpr_tps_caleg",
   {
     _id: text("_id").primaryKey().$defaultFn(ulid),
-    calon_id: text("calon_id").references(() => pdprCalonList.calon_id),
+    calon_id: text("calon_id").notNull(),
     tps: text("tps").references(() => pdprTpsList.kode),
     jumlah_suara: integer("jumlah_suara").notNull(),
 
