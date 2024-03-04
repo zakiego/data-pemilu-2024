@@ -193,8 +193,8 @@ export const pdprTpsPartai = pgTable(
 
     partai_id: text("partai_id"),
 
-    jumlah_suara_total: integer("jumlah_suara_total").notNull(),
-    jumlah_suara_partai: integer("jumlah_suara_partai").notNull(),
+    jumlah_suara_total: integer("jumlah_suara_total"),
+    jumlah_suara_partai: integer("jumlah_suara_partai"),
 
     ts: text("ts").notNull(),
 
