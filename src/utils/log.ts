@@ -10,11 +10,11 @@ const transport = pino.transport({
         destination: "./file.log",
       },
     },
-    {
-      level: "error",
-      target: "pino-pretty",
-      options: {},
-    },
+    // {
+    //   level: "error",
+    //   target: "pino-pretty",
+    //   options: {},
+    // },
   ],
 });
 
