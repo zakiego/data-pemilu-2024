@@ -10,10 +10,6 @@ on:
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-permissions:
-  actions: write
-  contents: write
-
 jobs:
   run:
     runs-on: self-hosted
