@@ -71,12 +71,10 @@ export const dpr = {
         chart: z
           .record(
             z.string(),
-            z.object(
-              {
-                jml_suara_total: z.number(),
-                jml_suara_partai: z.number(),
-              },
-            ),
+            z.object({
+              jml_suara_total: z.number().nullable(),
+              jml_suara_partai: z.number().nullable(),
+            }),
           )
           .nullable(),
         kode_dapil: z.string().nullish(),
