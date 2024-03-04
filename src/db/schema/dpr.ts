@@ -12,7 +12,9 @@ import {
 } from "drizzle-orm/pg-core";
 import { ulid } from "ulidx";
 
-export const pdprTps = pgTable("pdpr_tps_legacy", {
+// -- Legacy Schema
+
+export const pdprTps = pgTable("_pdpr_tps_legacy", {
   kode: text("kode").primaryKey(),
   provinsi_kode: text("provinsi_kode").notNull(),
   provinsi_nama: text("provinsi_nama"),
@@ -81,7 +83,7 @@ export const pdprTps = pgTable("pdpr_tps_legacy", {
   fetch_count: integer("fetch_count").default(0),
 });
 
-export const pdprDapilList = pgTable("pdpr_dapil_list_legacy", {
+export const pdprDapilList = pgTable("_pdpr_dapil_list_legacy", {
   id: integer("id").primaryKey(),
   nama: text("nama").notNull(),
   kode: text("kode").notNull(),
@@ -92,7 +94,7 @@ export const pdprDapilList = pgTable("pdpr_dapil_list_legacy", {
   is_calon_fetched: boolean("is_calon_fetched").default(false),
 });
 
-export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list_legacy", {
+export const pdprDapilCalonList = pgTable("_pdpr_dapil_calon_list_legacy", {
   nama: text("nama").notNull(),
   jenis_kelamin: text("jenis_kelamin").notNull(),
   tempat_tinggal: text("tempat_tinggal").notNull(),
@@ -108,6 +110,8 @@ export const pdprDapilCalonList = pgTable("pdpr_dapil_calon_list_legacy", {
   updated_at: timestamp("updated_at").defaultNow(),
   created_at: timestamp("created_at").defaultNow(),
 });
+
+// -- New Schema
 
 export const pdprTpsList = pgTable(
   "pdpr_tps_list",
