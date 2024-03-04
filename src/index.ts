@@ -112,39 +112,60 @@ const dpr = program
   .description("Get data penghitungan suara DPR RI");
 
 dpr
-  .command("insert-tps-detail")
-  .description("Insert TPS detail")
+  .command("init-tps-list")
+  .description("Init TPS List")
   .action(async () => {
-    await dprActions.insertTpsDetailV2();
+    await dprActions.initTpsList();
   });
 
 dpr
-  .command("update-tps-detail")
-  .description("Update TPS detail")
+  .command("get-calon-list")
+  .description("Get Calon List")
   .action(async () => {
-    await dprActions.updateTpsDetail();
+    await dprActions.getCalonList();
   });
 
 dpr
-  .command("insert-dapil-list")
-  .description("Insert Dapil")
+  .command("get-tps-detail")
+  .description("Get TPS Detail")
   .action(async () => {
-    await dprActions.insertDapilList();
+    await dprActions.getTpsDetail();
   });
 
-dpr
-  .command("get-dapil-calon-list")
-  .description("Get Dapil Calon List")
-  .action(async () => {
-    await dprActions.getDapilCalonList();
-  });
+// dpr
+//   .command("insert-tps-detail")
+//   .description("Insert TPS detail")
+//   .action(async () => {
+//     await dprActions.insertTpsDetailV2();
+//   });
 
-dpr
-  .command("update-dapil-calon-detail")
-  .description("Update Dapil Calon Detail")
-  .action(async () => {
-    await dprActions.updateDapilCalonDetail();
-  });
+// dpr
+//   .command("update-tps-detail")
+//   .description("Update TPS detail")
+//   .action(async () => {
+//     await dprActions.updateTpsDetail();
+//   });
+
+// dpr
+//   .command("insert-dapil-list")
+//   .description("Insert Dapil")
+//   .action(async () => {
+//     await dprActions.insertDapilList();
+//   });
+
+// dpr
+//   .command("get-dapil-calon-list")
+//   .description("Get Dapil Calon List")
+//   .action(async () => {
+//     await dprActions.getDapilCalonList();
+//   });
+
+// dpr
+//   .command("update-dapil-calon-detail")
+//   .description("Update Dapil Calon Detail")
+//   .action(async () => {
+//     await dprActions.updateDapilCalonDetail();
+//   });
 
 // ----------------- DPD -----------------
 
