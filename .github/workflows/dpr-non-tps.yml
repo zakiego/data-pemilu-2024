@@ -1,0 +1,27 @@
+name: Pull Data DPR Non TPS
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # at GMT+7, it will run at 10:00 AM
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+jobs:
+  run:
+    runs-on: self-hosted
+    timeout-minutes: 300 # 5 hours
+    steps:
+      - uses: actions/checkout@v4
+        # with:
+        #   submodules: recursive
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install
+        run: bun install
+
+      - name: DPR - Get Calon List
+        run: bun start dpr get-calon-list -c 30
