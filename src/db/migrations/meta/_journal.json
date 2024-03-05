@@ -477,6 +477,13 @@
       "when": 1709571193395,
       "tag": "0067_romantic_kate_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "5",
+      "when": 1709609235894,
+      "tag": "0068_glossy_fabian_cortez",
+      "breakpoints": true
     }
   ]
 }

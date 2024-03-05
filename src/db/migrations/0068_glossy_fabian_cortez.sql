@@ -1,0 +1,1 @@
+ALTER TABLE "pdpr_tps_caleg" ALTER COLUMN "jumlah_suara" DROP NOT NULL;
