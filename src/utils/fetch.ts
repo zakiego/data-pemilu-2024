@@ -6,7 +6,11 @@ export const strictFetch = async <T>(
   url: string,
   schema: z.Schema<T>,
 ): Promise<T> => {
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      Referer: "https://pemilu2024.kpu.go.id",
+    },
+  });
 
   if (!response.ok) {
     logger.error(`Failed to fetch ${url}`, response);
