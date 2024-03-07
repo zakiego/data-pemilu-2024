@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 1 * * *" # at GMT+7, it will run at 8:00 AM
     - cron: "0 13 * * *" # at GMT+7, it will run at 8:00 PM
+  push:
+    branches:
+      - main
 
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
