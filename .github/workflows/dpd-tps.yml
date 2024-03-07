@@ -3,9 +3,9 @@ name: Pull Data DPD TPS
 on:
   schedule:
     - cron: "0 1 * * *" # at GMT+7, it will run at 8:00 AM
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
