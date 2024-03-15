@@ -2,7 +2,7 @@ name: Pull Data DPR Non TPS
 
 on:
   schedule:
-    - cron: "0 3 * * *" # at GMT+7, it will run at 10:00 AM
+    - cron: "0 10 * * *" # at GMT+7, it will run at 17:00
 
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}

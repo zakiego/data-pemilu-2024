@@ -2,8 +2,8 @@ name: Pull Data DPR TPS
 
 on:
   schedule:
-    - cron: "0 1 * * *" # at GMT+7, it will run at 8:00 AM
-    - cron: "0 13 * * *" # at GMT+7, it will run at 8:00 PM
+    - cron: "0 4 * * *" # at GMT+7, it will run at 11:00 AM
+    # - cron: "0 13 * * *" # at GMT+7, it will run at 8:00 PM
   # push:
   #   branches:
   #     - main
